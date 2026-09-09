@@ -65,7 +65,7 @@ vec3 compositePlane(vec3 color,vec4 hit,vec3 eye,vec3 ray,float imageDistance,ve
  vec3 n=normalFor(hit.y);
  float frontness=abs(n.z);
  // Only the forward lens survives collapse; other cube faces disappear with expansion.
- float visibility=mix(smoothstep(.6,.95,n.z),1.,progress);
+ float visibility=mix(smoothstep(.6,.95,n.z),1.,clamp(progress,0.,1.));
  // Artwork is an opaque surface at z=0. Rear faces never refract it.
  if(hit.x>imageDistance)mask*=1.-imageAt(imagePoint).a;
  vec3 tint=environment(imagePoint)+glassTint*vec3(.45,.48,.5);
@@ -93,7 +93,7 @@ void main() {
  // Figma resting lens shadow: x 0, y 4, blur 113.4, black.
  float shadowDistance=roundedBox(imagePoint-vec2(0.,lensCenterY-4.),lensDimensions*.5,44.);
  float shadow=.5*exp(-.5*pow(max(shadowDistance,0.)/56.7,2.));
- color*=1.-shadow*(1.-progress);
+ color*=1.-shadow*(1.-clamp(progress,0.,1.));
 
  vec4 a=hitPlane(eye,ray,0.), b=hitPlane(eye,ray,1.), c=hitPlane(eye,ray,2.), d=hitPlane(eye,ray,3.);
  orderHits(a,b);orderHits(c,d);orderHits(a,c);orderHits(b,d);orderHits(b,c);

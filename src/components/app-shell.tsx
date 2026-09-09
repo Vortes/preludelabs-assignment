@@ -81,7 +81,8 @@ export function AppShell({
     const surface = root.querySelector<HTMLElement>("[data-nav-surface]");
     const compact = root.querySelector<HTMLElement>("[data-nav-compact]");
     const contents = root.querySelector<HTMLElement>("[data-nav-contents]");
-    const draw = (t: number) => {
+    const draw = (progress: number) => {
+      const t = Math.max(0, Math.min(1, progress));
       const mix = (a: number, b: number) => a + (b - a) * t;
       if (nav && surface && compact && contents) {
         const collapsed = Math.min(1, (124 * unit) / nav.clientWidth);

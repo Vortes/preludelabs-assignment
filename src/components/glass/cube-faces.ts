@@ -12,8 +12,3 @@ export function cubePresetsAtAngle(angle: number): number[] {
 export function cubeRotationTarget(selected: number) {
   return -selected * quarterTurn;
 }
-
-export function cubeRotationDuration(angle: number, target: number, duration: number) {
-  const steps = Math.abs(target - angle) / quarterTurn;
-  return duration * Math.min(3, Math.sqrt(steps));
-}

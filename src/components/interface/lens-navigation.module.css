@@ -1,14 +1,15 @@
-.nav {
+.magneticAnchor {
   flex: none;
-  position: relative;
   width: min(100%, calc(568px * var(--ui-unit)));
+}
+.nav {
+  transform-origin: bottom center;
+  position: relative;
+  width: 100%;
   height: calc(140px * var(--ui-unit));
   padding: calc(16px * var(--ui-unit));
   cursor: pointer;
   isolation: isolate;
-}
-.nav[data-expanded="true"] {
-  cursor: default;
 }
 .surface {
   position: absolute;
@@ -87,6 +88,7 @@
   pointer-events: none;
 }
 .add {
+  cursor: not-allowed;
   display: inline-flex;
   align-items: center;
   justify-content: center;
