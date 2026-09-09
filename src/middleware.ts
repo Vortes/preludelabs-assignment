@@ -1,6 +1,19 @@
+import { type NextRequest, type NextFetchEvent } from "next/server";
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+const withClerk = clerkMiddleware();
+
+export default function middleware(
+  request: NextRequest,
+  event: NextFetchEvent,
+) {
+  if (
+    request.nextUrl.pathname === "/" ||
+    request.nextUrl.pathname === "/prototype"
+  )
+    return;
+  return withClerk(request, event);
+}
 
 export const config = {
   matcher: [

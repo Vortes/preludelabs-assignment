@@ -1,0 +1,702 @@
+{
+  "small": [
+    {
+      "id": "01",
+      "nodeId": "4001:13032",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 89.30232238769531,
+        "dispersion": 100,
+        "frost": 1.7860463857650757,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": false,
+        "dispersion": 0,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 0
+        },
+        "strength": 0,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "02",
+      "nodeId": "4001:13021",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 45
+        },
+        "strength": 50,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "03",
+      "nodeId": "4001:13022",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 0
+        },
+        "strength": -42,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "04",
+      "nodeId": "4001:13023",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 3,
+          "angle": 0
+        },
+        "strength": 40,
+        "type": 1,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "05",
+      "nodeId": "4001:13024",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 2,
+          "angle": 0
+        },
+        "strength": 22,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "06",
+      "nodeId": "4001:13025",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 2,
+          "angle": 0
+        },
+        "strength": 22,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "07",
+      "nodeId": "4001:13026",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 45
+        },
+        "strength": 22,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "08",
+      "nodeId": "4001:13027",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 4,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 45
+        },
+        "strength": 24,
+        "type": 5,
+        "smoothness": 10,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "09",
+      "nodeId": "4001:13028",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 54,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 36,
+          "angle": 45
+        },
+        "strength": 50,
+        "type": 3,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "10",
+      "nodeId": "4001:13029",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 2,
+          "angle": 45
+        },
+        "strength": 15,
+        "type": 4,
+        "smoothness": 20,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "11",
+      "nodeId": "4001:13030",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 124,
+          "angle": 45
+        },
+        "strength": 100,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "12",
+      "nodeId": "4001:13031",
+      "radius": 35.72092819213867,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 8.15999984741211,
+          "angle": 88
+        },
+        "strength": 16,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    }
+  ],
+  "large": [
+    {
+      "id": "01",
+      "nodeId": "4001:13016",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": false,
+        "dispersion": 0,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 0
+        },
+        "strength": 0,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "02",
+      "nodeId": "4001:13018",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 45
+        },
+        "strength": 50,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "03",
+      "nodeId": "4001:13008",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 0
+        },
+        "strength": 100,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "04",
+      "nodeId": "4001:13010",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 3,
+          "angle": 0
+        },
+        "strength": 74,
+        "type": 1,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "05",
+      "nodeId": "4001:13012",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 45
+        },
+        "strength": 54,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "06",
+      "nodeId": "4001:13014",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 1,
+          "angle": 0
+        },
+        "strength": 70,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "07",
+      "nodeId": "4001:13019",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 30,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 12,
+          "angle": 45
+        },
+        "strength": 100,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "08",
+      "nodeId": "4001:13009",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 4,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 45
+        },
+        "strength": 50,
+        "type": 5,
+        "smoothness": 10,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "09",
+      "nodeId": "4001:13017",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 29,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 2,
+          "angle": 45
+        },
+        "strength": 50,
+        "type": 3,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "10",
+      "nodeId": "4001:13011",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 4,
+          "angle": 45
+        },
+        "strength": 100,
+        "type": 4,
+        "smoothness": 100,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "11",
+      "nodeId": "4001:13013",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 32.57597732543945,
+          "angle": 30
+        },
+        "strength": 100,
+        "type": 0,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    },
+    {
+      "id": "12",
+      "nodeId": "4001:13015",
+      "radius": 40,
+      "glass": {
+        "lightAngle": 180,
+        "lightIntensity": 20.000000298023224,
+        "refraction": 100,
+        "depth": 100,
+        "dispersion": 100,
+        "frost": 2,
+        "splay": 100
+      },
+      "pattern": {
+        "enabled": true,
+        "dispersion": 20,
+        "frost": 0,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "radius": 16,
+          "angle": 88
+        },
+        "strength": 100,
+        "type": 2,
+        "smoothness": 0,
+        "wrap": 0
+      }
+    }
+  ]
+}
