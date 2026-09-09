@@ -116,7 +116,7 @@
   padding: 0 calc(24px * var(--ui-unit));
 }
 
-.actions div {
+.action {
   height: calc(44px * var(--ui-unit));
   display: flex;
   align-items: center;
@@ -320,9 +320,9 @@
 .sources { display: flex; align-items: center; gap: calc(8px * var(--ui-unit)); margin: 0; font-size: calc(12px * var(--ui-unit)); }
 .sources img { width: calc(52px * var(--ui-unit)); height: calc(32px * var(--ui-unit)); object-fit: contain; }
 .composer { border-radius: calc(32px * var(--ui-unit)); }
-.actions { padding: 0; }
-.actions .action { padding: 0 calc(24px * var(--ui-unit)); gap: calc(8px * var(--ui-unit)); height: calc(44px * var(--ui-unit)); border-radius: calc(32px * var(--ui-unit)) calc(32px * var(--ui-unit)) 0 0; }
-.action:nth-child(2), .action:nth-child(3) { background: #ffffff0d; backdrop-filter: blur(45px); }
+.actions { padding: 0; height: 100%; }
+.actions .action { padding: 0 calc(24px * var(--ui-unit)); gap: calc(8px * var(--ui-unit)); height: calc(44px * var(--ui-unit)); }
+.actionGroup { height: calc(100% - 44px * var(--ui-unit)); background: #ffffff0d; backdrop-filter: blur(45px); border-radius: calc(32px * var(--ui-unit)) calc(32px * var(--ui-unit)) 0 0; overflow: hidden; }
 .actionLabel { flex: 1; }
 .shortcut { display: grid; place-items: center; width: calc(20px * var(--ui-unit)); height: calc(20px * var(--ui-unit)); border-radius: 50%; font-size: calc(12px * var(--ui-unit)); color: #ffffff66; background: linear-gradient(#18181b, #222226); box-shadow: inset 0 1px 1px #b5b5be33, inset 0 -1px 1px #0c0c0d; }
 .input { border-radius: calc(32px * var(--ui-unit)); }

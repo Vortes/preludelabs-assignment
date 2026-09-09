@@ -160,11 +160,11 @@ export function SpecularOverlay() {
           gl.uniform1f(uniforms.angle!, angle);
           gl.uniform1f(
             uniforms.intensity!,
-            (element.dataset.glassHighlight === "heavy" ? 80 : 20) * strength,
+            (element.dataset.glassHighlight === "panel" ? 8 : 20) * strength,
           );
           gl.uniform1f(
             uniforms.softness!,
-            element.dataset.glassHighlight === "heavy" ? 2 : 1,
+            element.dataset.glassHighlight === "panel" ? 0.7 : 1,
           );
           gl.drawArrays(gl.TRIANGLES, 0, 6);
         });

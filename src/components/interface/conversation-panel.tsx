@@ -82,19 +82,23 @@ export function ConversationPanel() {
         aria-label="Chat composer"
       >
         <div className={styles.actions}>
-          {(
-            [
-              ["Accept all insights and continue", "arrow-right"],
+          <div className={styles.action}>
+            <span className={styles.shortcut}>1</span>
+            <span className={styles.actionLabel}>Accept all insights and continue</span>
+            <IconControl name="arrow-right" label="Accept all insights and continue" />
+          </div>
+          <div className={styles.actionGroup}>
+            {([
               ["Edit the references", "pencil"],
               ["Generate more connections", "loop"],
-            ] as const
-          ).map(([label, icon], index) => (
-            <div className={styles.action} key={label}>
-              <span className={styles.shortcut}>{index + 1}</span>
-              <span className={styles.actionLabel}>{label}</span>
-              <IconControl name={icon} label={label} />
-            </div>
-          ))}
+            ] as const).map(([label, icon], index) => (
+              <div className={styles.action} key={label}>
+                <span className={styles.shortcut}>{index + 2}</span>
+                <span className={styles.actionLabel}>{label}</span>
+                <IconControl name={icon} label={label} />
+              </div>
+            ))}
+          </div>
         </div>
         <div className={styles.input}>
           <span>Talk to Prelude…</span>

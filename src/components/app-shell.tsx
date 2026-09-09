@@ -133,7 +133,7 @@ export function AppShell({
         >
           <aside
             className={`${styles.panel} ${glass.surface} ${glass.panel}`}
-            data-glass-highlight="heavy"
+            data-glass-highlight="panel"
             aria-label="Lens conversation"
           >
             {sidebar}
