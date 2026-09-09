@@ -1,30 +1,37 @@
 "use client";
+import { useLensMotion } from "./interface/lens-motion";
 import { useState } from "react";
-import Image from "next/image";
 import { AppShell } from "./app-shell";
 import { ConversationPanel } from "./interface/conversation-panel";
 import { WorkspaceNavigation } from "./interface/workspace-navigation";
-import { InsightCallout } from "./interface/insight-callout";
 import { WorkspaceFooter } from "./interface/workspace-footer";
 export function InterfacePreview() {
   const [selected, setSelected] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const [instantSelection, setInstantSelection] = useState(false);
+  const [instantMotion, setInstantMotion] = useState(false);
+  const motion = useLensMotion(expanded, instantMotion);
   return (
     <AppShell
       selectedLens={selected}
-      expanded={expanded}
+      motion={motion}
       sidebar={<ConversationPanel />}
       navigation={<WorkspaceNavigation />}
-      detail={<InsightCallout />}
-      footer={<WorkspaceFooter selected={selected} expanded={expanded} onSelect={setSelected} onExpand={setExpanded} />}
-    >
-      <Image
-        src="/figma/lens-artwork-hq.png"
-        alt="Painting of women walking through the city"
-        width={600}
-        height={600}
-        priority
-      />
-    </AppShell>
+      instantSelection={instantSelection}
+      footer={
+        <WorkspaceFooter
+          selected={selected}
+          expanded={motion.open}
+          onSelect={(index, instant = false) => {
+            setInstantSelection(instant);
+            setSelected(index);
+          }}
+          onExpand={(open, instant = false) => {
+            setInstantMotion(instant);
+            setExpanded(open);
+          }}
+        />
+      }
+    />
   );
 }

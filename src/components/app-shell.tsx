@@ -4,6 +4,7 @@ import {
   type CSSProperties,
   type ReactNode,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -12,26 +13,24 @@ import "dialkit/styles.css";
 import { shellControls } from "./interface/shell-controls";
 import styles from "./app-shell.module.css";
 import { SpecularOverlay } from "./glass/specular-overlay";
-import { GlassCanvas } from "./glass/glass-canvas";
-import { getPreset, presetValues } from "./glass/presets";
+import { ExplodedCube } from "./glass/exploded-cube";
+import { type useLensMotion } from "./interface/lens-motion";
 import glass from "./interface/glass-surface.module.css";
 
 /** Coordinates and defaults are in the 1920 × 1080 Figma frame's pixels. */
 export function AppShell({
   selectedLens = 0,
-  expanded = false,
+  motion,
   sidebar,
   navigation,
-  children,
-  detail,
+  instantSelection,
   footer,
 }: {
   selectedLens?: number;
-  expanded?: boolean;
+  motion: ReturnType<typeof useLensMotion>;
   sidebar: ReactNode;
   navigation: ReactNode;
-  children: ReactNode;
-  detail: ReactNode;
+  instantSelection: boolean;
   footer: ReactNode;
 }) {
   const host = useRef<HTMLDivElement>(null);
@@ -56,34 +55,6 @@ export function AppShell({
   }, []);
   const unit = Math.min(1, Math.max(0.65, viewport.width / 1920));
   const panelWidth = Math.min(p.panel.width * unit, viewport.width * 0.38);
-  const stageWidth = viewport.width - panelWidth - p.panel.inset * unit;
-  const artScale = Math.min(
-    unit,
-    (stageWidth - 48) / Math.max(p.lens.width, expanded ? 966 : 0),
-    (viewport.height - 160 * unit) / 820,
-  );
-  const artTop = Math.max(
-    p.navigation.height * unit + 16,
-    (viewport.height - 1080 * artScale) / 2 + p.artwork.top * artScale,
-  );
-  const artSize = expanded ? 454 : p.artwork.size;
-  const lensWidth = expanded ? 570 : p.lens.width;
-  const lensHeight = expanded ? 570 : p.lens.height;
-  const artworkTop = artTop + (expanded ? 19 * artScale : 0);
-  const lensTop = expanded
-    ? artworkTop - 58 * artScale
-    : artTop + (p.lens.top - p.artwork.top) * artScale;
-  const lensValues = {
-    ...presetValues(getPreset(selectedLens, "large")),
-    radius: p.lens.radius,
-  };
-  const geometry = {
-    width: lensWidth,
-    height: lensHeight,
-    imageSize: artSize,
-    imageX: (lensWidth - artSize) / 2 + p.artwork.offsetX - p.lens.offsetX,
-    imageY: (artworkTop - lensTop) / artScale,
-  };
   const variables = {
     "--panel-inset": `${p.panel.inset * unit}px`,
     "--panel-width": `${panelWidth}px`,
@@ -96,32 +67,34 @@ export function AppShell({
     "--stage-left": `${p.panel.inset * unit + panelWidth}px`,
     "--nav-padding": `${p.navigation.padding * unit}px`,
     "--nav-height": `${p.navigation.height * unit}px`,
-    "--art-size": `${artSize * artScale}px`,
-    "--art-top": `${artworkTop}px`,
-    "--art-x": `${p.artwork.offsetX * artScale}px`,
-    "--art-radius": `${p.artwork.radius * artScale}px`,
-    "--lens-width": `${lensWidth * artScale}px`,
-    "--lens-height": `${lensHeight * artScale}px`,
-    "--lens-top": `${lensTop}px`,
-    "--lens-x": `${p.lens.offsetX * artScale}px`,
-    "--lens-radius": `${p.lens.radius * artScale}px`,
-    "--detail-width": `${p.detail.width * artScale}px`,
-    "--detail-height": `${p.detail.height * artScale}px`,
-    "--detail-top": `${artTop + ((expanded ? 596 : p.detail.top) - p.artwork.top) * artScale}px`,
-    "--detail-x": `${p.detail.offsetX * artScale}px`,
-    "--detail-padding": `${p.detail.padding * artScale}px`,
-    "--detail-radius": `${p.detail.radius * artScale}px`,
     "--footer-height": `${p.footer.height * unit}px`,
     "--footer-bottom": `${p.footer.bottomPadding * unit}px`,
     "--footer-gap": `${p.footer.gap * unit}px`,
     "--specular-angle": p.highlights.angle,
     "--specular-strength": p.highlights.strength,
-    "--side-size": `${256 * artScale}px`,
-    "--side-spread": `${355 * artScale}px`,
-    "--side-top": `${artTop + 240 * artScale}px`,
     "--ui-unit": unit,
-    "--art-unit": artScale,
   } as CSSProperties;
+  useLayoutEffect(() => {
+    const root = host.current;
+    if (!root) return;
+    const nav = root.querySelector<HTMLElement>("[data-lens-nav]");
+    const surface = root.querySelector<HTMLElement>("[data-nav-surface]");
+    const compact = root.querySelector<HTMLElement>("[data-nav-compact]");
+    const contents = root.querySelector<HTMLElement>("[data-nav-contents]");
+    const draw = (t: number) => {
+      const mix = (a: number, b: number) => a + (b - a) * t;
+      if (nav && surface && compact && contents) {
+        const collapsed = Math.min(1, (124 * unit) / nav.clientWidth);
+        surface.style.transform = `scale(${mix(collapsed, 1)}, ${mix(40 / 140, 1)})`;
+        compact.style.opacity = String(1 - Math.min(1, t * 3));
+        contents.style.opacity = String(Math.max(0, (t - 0.2) / 0.8));
+        contents.style.transform = `translateY(${12 * (1 - t)}px)`;
+        nav.style.clipPath = `inset(${(1 - t) * (140 - 40) * unit}px ${((1 - t) * (nav.clientWidth - 124 * unit)) / 2}px 0 round ${32 * unit}px)`;
+      }
+    };
+    motion.render.current = draw;
+    draw(motion.progress.current.value);
+  });
   return (
     <div ref={host} className={styles.viewport}>
       <div className={styles.desktop}>
@@ -129,7 +102,7 @@ export function AppShell({
           className={styles.frame}
           style={variables}
           data-guides={p.showGuides}
-          data-expanded={expanded}
+          data-expanded={motion.open}
         >
           <aside
             className={`${styles.panel} ${glass.surface} ${glass.panel}`}
@@ -140,39 +113,13 @@ export function AppShell({
           </aside>
           <section className={styles.stage} aria-label="Content workspace">
             <header className={styles.navigation}>{navigation}</header>
-            <div className={styles.artwork}>{children}</div>
-            <div
-              className={styles.lens}
-              aria-label={`Lens ${selectedLens + 1}`}
-            >
-              {viewport.width >= 768 && (
-                <GlassCanvas values={lensValues} geometry={geometry} />
-              )}
-            </div>
-            {[-1, 1].map((side) => (
-              <div
-                key={side}
-                className={styles.side}
-                style={{ "--side": side } as CSSProperties}
-                aria-hidden="true"
-              >
-                {viewport.width >= 768 && (
-                  <GlassCanvas
-                    values={presetValues(
-                      getPreset((selectedLens + side + 12) % 12, "large"),
-                    )}
-                    geometry={{
-                      width: 256,
-                      height: 256,
-                      imageSize: 454,
-                      imageX: -99,
-                      imageY: -99,
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-            <div className={styles.detail}>{detail}</div>
+            {viewport.width >= 768 && (
+              <ExplodedCube
+                motion={motion}
+                selected={selectedLens}
+                instant={instantSelection}
+              />
+            )}
             <footer className={styles.footer}>{footer}</footer>
           </section>
           {viewport.width >= 768 && <SpecularOverlay />}
@@ -185,7 +132,7 @@ export function AppShell({
         <DialRoot
           position="bottom-right"
           theme="dark"
-          defaultOpen={false}
+          defaultOpen={true}
           productionEnabled
         />
       )}

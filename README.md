@@ -1,3 +1,16 @@
+## Glass workshop demo
+
+The current homepage is a standalone glass shader prototype. Run `bun dev`
+locally; build the demo with `SKIP_ENV_VALIDATION=1 bun run build`.
+The Vercel production project is `vortes-projects/preludelabs-assignment`.
+Its `SKIP_ENV_VALIDATION=1` setting allows this visual demo to build without
+the unused starter database and Clerk credentials; authenticated starter
+routes still require the credentials described below.
+
+In DialKit, **Exploded cube → Hold Expanded** keeps the cube open while
+tuning. Disable it to restore navbar hover behavior. Shader selection follows
+the list order, and leaving during a turn settles the rotation before collapse.
+
 # T3 + Neon + Clerk Starter
 
 A minimal, production-shaped T3 starter using Next.js, tRPC, Tailwind CSS,

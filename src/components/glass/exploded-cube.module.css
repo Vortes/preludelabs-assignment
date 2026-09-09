@@ -1,0 +1,16 @@
+.scene {
+  position: absolute;
+  inset: var(--nav-height) 0 155px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.scene canvas {
+  display: block;
+  width: min(100%, calc((100dvh - var(--nav-height) - 155px) * 1.29412));
+  aspect-ratio: 1100 / 850;
+}
+.scene p {
+  position: absolute;
+  color: #ddd;
+}
