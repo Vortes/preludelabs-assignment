@@ -6,3 +6,5 @@ Preview: https://cdn.freesound.org/previews/708/708074_14713615-hq.mp3
 License: CC0 https://creativecommons.org/publicdomain/zero/1.0/
 
 Derived from the publicly available HQ MP3 preview, not the original WAV.
+
+Playback asset peak-normalized to 80% of full scale for audible UI playback; duration and sample rate unchanged.
