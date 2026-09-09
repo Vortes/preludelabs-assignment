@@ -185,7 +185,7 @@ export function ExplodedCube({
       const centerY = 600 * (0.5 - m.values.focalY) * (1 - t) * projection;
       const imageSize = 600 * (1 + (m.values.artworkScale - 1) * t);
       if (detail.current) {
-        detail.current.style.setProperty("--art-unit", String(cssWidth / 1100 * 1.12));
+        detail.current.style.setProperty("--art-unit", String(cssWidth / 1100));
         detail.current.style.backdropFilter = `blur(${25 * cssWidth / 1100}px)`;
         detail.current.style.top = `${(425 + imageSize / 2 - 154) / 850 * 100}%`;
       }
