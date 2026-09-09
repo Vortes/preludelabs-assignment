@@ -19,38 +19,9 @@
   flex: none;
 }
 
-.userMessage,
-.assistantMessage,
-.takeaway {
-  font-size: max(14px, calc(18px * var(--ui-unit)));
-  line-height: 1.6;
-  color: #c7c7c7;
-  flex: none;
-}
-
-.userMessage {
-  align-self: flex-end;
-  max-width: 90%;
-  padding: calc(20px * var(--ui-unit)) calc(24px * var(--ui-unit));
-  border-radius: calc(24px * var(--ui-unit));
-  background: #151515;
-}
-
-.assistantMessage {
-  padding-inline: calc(24px * var(--ui-unit));
-}
-
-.messageAuthor {
-  margin-bottom: calc(8px * var(--ui-unit));
-  font-family: Arial, sans-serif;
-  font-size: max(11px, calc(14px * var(--ui-unit)));
-  color: #999;
-}
-
-.takeaway {
-  margin-top: calc(24px * var(--ui-unit));
-  padding-left: calc(16px * var(--ui-unit));
-  border-left: 1px solid #444;
+.card:first-child {
+  min-height: calc(451px * var(--ui-unit));
+  height: auto;
 }
 
 .cardHeader {
@@ -364,7 +335,7 @@
 }
 .actions { padding: 0; height: 100%; }
 .actions .action { padding: 0 calc(24px * var(--ui-unit)); gap: calc(8px * var(--ui-unit)); height: calc(44px * var(--ui-unit)); }
-.actionGroup { height: calc(100% - 44px * var(--ui-unit)); background: #171717; border-radius: calc(32px * var(--ui-unit)) calc(32px * var(--ui-unit)) 0 0; overflow: hidden; }
+.actionGroup { height: calc(100% - 44px * var(--ui-unit)); background: #ffffff0d; backdrop-filter: blur(45px); border-radius: calc(32px * var(--ui-unit)) calc(32px * var(--ui-unit)) 0 0; overflow: hidden; }
 .actionLabel { flex: 1; }
 .shortcut { display: grid; place-items: center; width: calc(20px * var(--ui-unit)); height: calc(20px * var(--ui-unit)); border-radius: 50%; font-size: calc(12px * var(--ui-unit)); color: #ffffff66; background: linear-gradient(#18181b, #222226); box-shadow: inset 0 1px 1px #b5b5be33, inset 0 -1px 1px #0c0c0d; }
 .input {
