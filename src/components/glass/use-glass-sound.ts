@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { isSoundEnabled, soundPreferenceEvent } from "../interface/sound-preference";
 
 export function useGlassSound() {
   const player = useRef<{
@@ -20,15 +21,16 @@ export function useGlassSound() {
       active = undefined;
     };
     const unlock = () => {
+      if (!isSoundEnabled()) return;
       if (context.state === "suspended") void context.resume().catch((error: unknown) => {
         if (!abort.signal.aborted) console.error("Could not enable glass audio", error);
       });
     };
     const hide = () => { if (document.hidden) stop(); };
     document.addEventListener("click", unlock, true);
-    document.addEventListener("pointerup", unlock, true);
-    document.addEventListener("pointerdown", unlock, true);
     document.addEventListener("keydown", unlock, true);
+    window.addEventListener(soundPreferenceEvent, unlock);
+    unlock();
     document.addEventListener("visibilitychange", hide);
     void fetch("/audio/glass-slide-head.wav", { signal: abort.signal })
       .then((response) => {
@@ -43,7 +45,7 @@ export function useGlassSound() {
         if (!abort.signal.aborted) console.error("Could not load glass sound", error);
       });
     const playReady = () => {
-        if (!pending || !buffer || context.state !== "running" || document.hidden) return;
+        if (!isSoundEnabled() || !pending || !buffer || context.state !== "running" || document.hidden) return;
         pending = false;
         const source = context.createBufferSource();
         const gain = context.createGain();
@@ -80,9 +82,8 @@ export function useGlassSound() {
       player.current = null;
       context.removeEventListener("statechange", playReady);
       document.removeEventListener("click", unlock, true);
-      document.removeEventListener("pointerup", unlock, true);
-      document.removeEventListener("pointerdown", unlock, true);
       document.removeEventListener("keydown", unlock, true);
+      window.removeEventListener(soundPreferenceEvent, unlock);
       document.removeEventListener("visibilitychange", hide);
       void context.close();
     };

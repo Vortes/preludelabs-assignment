@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { isSoundEnabled, soundPreferenceEvent } from "./sound-preference";
 
 export function useProximitySound(expanded: boolean) {
   const sound = useRef<{
@@ -40,6 +41,7 @@ export function useProximitySound(expanded: boolean) {
     };
     let disposed = false;
     const unlock = () => {
+      if (!isSoundEnabled()) return;
       if (context.state === "suspended") void context.resume().catch((error: unknown) => {
         if (!disposed) console.error("Could not enable proximity audio", error);
       });
@@ -55,7 +57,7 @@ export function useProximitySound(expanded: boolean) {
       stop,
       approach(value) {
         strength = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
-        if (context.state !== "running" || document.hidden) return;
+        if (!isSoundEnabled() || context.state !== "running" || document.hidden) return;
         const now = context.currentTime;
         oscillator.frequency.setTargetAtTime(45 + 50 * strength, now, 0.045);
         filter.frequency.setTargetAtTime(100 + 180 * strength, now, 0.045);
@@ -63,7 +65,7 @@ export function useProximitySound(expanded: boolean) {
       },
       resolve() {
         stop();
-        if (strength <= 0 || context.state !== "running" || document.hidden) return;
+        if (!isSoundEnabled() || strength <= 0 || context.state !== "running" || document.hidden) return;
         strength = 0;
         pop?.stop();
         const pulse = context.createOscillator();
@@ -90,19 +92,18 @@ export function useProximitySound(expanded: boolean) {
     };
     context.addEventListener("statechange", ready);
     document.addEventListener("click", unlock, true);
-    document.addEventListener("pointerup", unlock, true);
-    document.addEventListener("pointerdown", unlock, true);
     document.addEventListener("keydown", unlock, true);
+    window.addEventListener(soundPreferenceEvent, unlock);
+    unlock();
     document.addEventListener("visibilitychange", hide);
     window.addEventListener("blur", silence);
     return () => {
       disposed = true;
       context.removeEventListener("statechange", ready);
-      document.removeEventListener("click", unlock, true);
-      document.removeEventListener("pointerup", unlock, true);
       sound.current = null;
-      document.removeEventListener("pointerdown", unlock, true);
+      document.removeEventListener("click", unlock, true);
       document.removeEventListener("keydown", unlock, true);
+      window.removeEventListener(soundPreferenceEvent, unlock);
       document.removeEventListener("visibilitychange", hide);
       window.removeEventListener("blur", silence);
       pop?.stop();

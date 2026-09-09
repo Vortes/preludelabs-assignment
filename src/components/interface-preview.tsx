@@ -1,6 +1,7 @@
 "use client";
 import { useLensMotion } from "./interface/lens-motion";
 import { useState } from "react";
+import { SoundWelcome } from "./interface/sound-welcome";
 import { AppShell } from "./app-shell";
 import { ConversationPanel } from "./interface/conversation-panel";
 import { WorkspaceNavigation } from "./interface/workspace-navigation";
@@ -12,6 +13,7 @@ export function InterfacePreview() {
   const [instantMotion, setInstantMotion] = useState(false);
   const motion = useLensMotion(expanded, instantMotion);
   return (
+    <>
     <AppShell
       selectedLens={selected}
       motion={motion}
@@ -33,5 +35,7 @@ export function InterfacePreview() {
         />
       }
     />
+    <SoundWelcome />
+    </>
   );
 }
