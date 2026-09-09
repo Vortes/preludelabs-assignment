@@ -97,7 +97,7 @@ export function ExplodedCube({
           duration: rotationSettle * 0.4,
           ease: "sine.inOut",
         });
-      if (process.env.NODE_ENV === "development") timeline.timeScale(0.25);
+      timeline.timeScale(0.25);
     };
     turn();
     media.addEventListener("change", turn);

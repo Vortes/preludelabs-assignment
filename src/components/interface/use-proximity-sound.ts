@@ -38,8 +38,11 @@ export function useProximitySound(expanded: boolean) {
     const stop = () => {
       output.gain.setTargetAtTime(0, context.currentTime, 0.035);
     };
+    let disposed = false;
     const unlock = () => {
-      if (context.state === "suspended") void context.resume();
+      if (context.state === "suspended") void context.resume().catch((error: unknown) => {
+        if (!disposed) console.error("Could not enable proximity audio", error);
+      });
     };
     const silence = () => {
       strength = 0;
@@ -82,11 +85,21 @@ export function useProximitySound(expanded: boolean) {
         pulse.stop(now + 0.21);
       },
     };
+    const ready = () => {
+      if (context.state === "running") sound.current?.approach(strength);
+    };
+    context.addEventListener("statechange", ready);
+    document.addEventListener("click", unlock, true);
+    document.addEventListener("pointerup", unlock, true);
     document.addEventListener("pointerdown", unlock, true);
     document.addEventListener("keydown", unlock, true);
     document.addEventListener("visibilitychange", hide);
     window.addEventListener("blur", silence);
     return () => {
+      disposed = true;
+      context.removeEventListener("statechange", ready);
+      document.removeEventListener("click", unlock, true);
+      document.removeEventListener("pointerup", unlock, true);
       sound.current = null;
       document.removeEventListener("pointerdown", unlock, true);
       document.removeEventListener("keydown", unlock, true);
