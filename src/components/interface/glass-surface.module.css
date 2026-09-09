@@ -1,25 +1,16 @@
-/* Figma chat GLASS: light 180° / 20%, refraction 100, depth 100,
-   dispersion 100, frost 2, splay 100. CSS approximates native refraction. */
 .surface {
-  --glass-fill: #0003;
-  --glass-frost: 1px;
   background: var(--glass-fill);
-  backdrop-filter: blur(var(--glass-frost));
-  -webkit-backdrop-filter: blur(var(--glass-frost));
   box-shadow: none;
 }
 .panel {
-  --glass-fill: #0008;
-  --glass-frost: 15px;
+  --glass-fill: #080808;
   border-color: #383838;
-
 }
 .card {
-  --glass-fill: radial-gradient(ellipse at 50% 100%, #0000007d 39.4%, transparent 100%),
-    radial-gradient(ellipse at 50% 100%, #00000052 39.4%, transparent 100%), #0003;
+  --glass-fill: #111111;
   border-color: transparent;
 }
 .composer {
-  --glass-fill: #0000004d;
+  --glass-fill: #0a0a0a;
   border-color: transparent;
 }

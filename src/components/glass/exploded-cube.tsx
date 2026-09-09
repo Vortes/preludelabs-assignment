@@ -9,6 +9,7 @@ import { getPreset, presetValues } from "./presets";
 import { cubePresetsAtAngle, cubeRotationTarget, quarterTurn } from "./cube-faces";
 import styles from "./exploded-cube.module.css";
 import { InsightCallout } from "../interface/insight-callout";
+import { InsightGlass } from "./insight-glass";
 import { useGlassSound } from "./use-glass-sound";
 
 export function ExplodedCube({
@@ -27,6 +28,7 @@ export function ExplodedCube({
   const canvas = useRef<HTMLCanvasElement>(null);
   const detail = useRef<HTMLElement>(null);
   const [detailOpen, setDetailOpen] = useState(true);
+  const renderInsight = useRef<(() => void) | null>(null);
   const renderer = useRef<(() => void) | null>(null);
   const latest = useRef(motion);
   const rotation = useRef({ angle: cubeRotationTarget(selected) });
@@ -309,6 +311,7 @@ export function ExplodedCube({
       for (const [key, value] of Object.entries(m.values))
         if (typeof value === "number") set(key, value);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
+      renderInsight.current?.();
     };
     const scheduleDraw = () => {
       if (drawQueued) return;
@@ -337,7 +340,6 @@ export function ExplodedCube({
     const updateDetailSize = () => {
       if (!detail.current) return;
       detail.current.style.setProperty("--art-unit", String(cssWidth / 1100));
-      detail.current.style.backdropFilter = `blur(${25 * cssWidth / 1100}px)`;
     };
     updateDetailSize();
     const observer = new ResizeObserver(([entry]) => {
@@ -375,6 +377,7 @@ export function ExplodedCube({
         aria-label={`Exploded glass cube, lens ${selected + 1}, refracting a painting of women walking through the city`}
       />
       {detailOpen && <aside ref={detail} className={styles.detail} aria-label="Aesthetic contrast insight">
+        <InsightGlass source={canvas} renderSurface={renderInsight} redrawScene={renderer} />
         <button
           type="button"
           className={styles.closeDetail}
