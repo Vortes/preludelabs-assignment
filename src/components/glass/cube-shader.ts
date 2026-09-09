@@ -71,10 +71,13 @@ vec3 compositePlane(vec3 color,vec4 hit,vec3 eye,vec3 ray,float imageDistance,ve
  vec3 tint=environment(imagePoint)+glassTint*vec3(.45,.48,.5);
  vec3 result=mix(color,tint,.65*visibility);
  if(hit.x<imageDistance) {
-   vec2 lensUV=vec2(imagePoint.x/lensDimensions.x+.5,(imagePoint.y-lensCenterY)/lensDimensions.y+.5);
+   vec2 lensUV=local/(extent*2.)+.5;
    if(all(greaterThanEqual(lensUV,vec2(0.))) && all(lessThanEqual(lensUV,vec2(1.)))) {
      vec4 optical=faceOptics(hit.y,lensUV);
-     result=mix(result,optical.rgb,optical.a);
+     // Expanded faces filter only the artwork beneath them. The original wide
+     // resting lens retains its authored edge diffraction during collapse.
+     float artworkCoverage=mix(1.,imageAt(imagePoint).a,progress);
+     result=mix(result,optical.rgb,optical.a*artworkCoverage);
    }
 
  }
@@ -89,6 +92,11 @@ void main() {
  float imageDistance=-eye.z/ray.z;
  vec2 imagePoint=(eye+imageDistance*ray).xy;
  vec3 color=sceneAt(imagePoint,0.);
+ // Figma resting lens shadow: x 0, y 4, blur 113.4, black.
+ float shadowDistance=roundedBox(imagePoint-vec2(0.,lensCenterY-4.),lensDimensions*.5,44.);
+ float shadow=.5*exp(-.5*pow(max(shadowDistance,0.)/56.7,2.));
+ color*=1.-shadow*(1.-progress);
+
  vec4 a=hitPlane(eye,ray,0.), b=hitPlane(eye,ray,1.), c=hitPlane(eye,ray,2.), d=hitPlane(eye,ray,3.);
  orderHits(a,b);orderHits(c,d);orderHits(a,c);orderHits(b,d);orderHits(b,c);
  color=compositePlane(color,a,eye,ray,imageDistance,imagePoint);

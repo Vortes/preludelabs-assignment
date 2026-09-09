@@ -2,7 +2,19 @@ import { fragmentShader, vertexShader } from "./shader";
 import { type GlassGeometry } from "./glass-canvas";
 import { type GlassValues } from "./presets";
 
-/** Render the existing Figma optics unchanged into the cube's refraction texture. */
+// Keep the authored optical equations; project their sample points through the
+// moving glass onto the stationary artwork instead of attaching an image to it.
+const projectedFragmentShader = fragmentShader.replace(
+  "vec3 scene(vec2 p) {",
+  `uniform vec3 faceCenter, faceRight;
+uniform float cameraDistance;
+vec3 scene(vec2 p) {
+  vec3 world = faceCenter + faceRight * (p.x - dimensions.x * .5)
+    + vec3(0., dimensions.y * .5 - p.y, 0.);
+  vec2 projected = world.xy * cameraDistance / max(1., cameraDistance - world.z);
+  p = vec2(projected.x, -projected.y) + imageOffset + imageSize * .5;`,
+);
+
 export function createOriginalLensPass(
   gl: WebGLRenderingContext,
   textureUnit: number,
@@ -21,7 +33,7 @@ export function createOriginalLensPass(
   };
   for (const [type, source] of [
     [gl.VERTEX_SHADER, vertexShader],
-    [gl.FRAGMENT_SHADER, fragmentShader],
+    [gl.FRAGMENT_SHADER, projectedFragmentShader],
   ] as const) {
     const shader = gl.createShader(type)!;
     shaders.push(shader);
@@ -71,10 +83,12 @@ export function createOriginalLensPass(
       artwork: WebGLTexture,
       textureSize: number,
       resolution: number,
+      projection: { center: number[]; right: number[]; camera: number },
     ) {
       const dimensions = [
         geometry.width, geometry.height, geometry.imageSize,
         geometry.imageX, geometry.imageY, textureSize, resolution,
+        ...projection.center, ...projection.right, projection.camera,
       ];
       if (values === previousValues &&
         dimensions.every((value, index) => value === previousGeometry[index])) return;
@@ -112,6 +126,9 @@ export function createOriginalLensPass(
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, artwork);
       gl.uniform1i(location("artwork"), 0);
+      gl.uniform3fv(location("faceCenter"), projection.center);
+      gl.uniform3fv(location("faceRight"), projection.right);
+      gl.uniform1f(location("cameraDistance"), projection.camera);
       gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
       gl.enableVertexAttribArray(position);
       gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);

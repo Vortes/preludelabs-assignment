@@ -8,6 +8,7 @@ import { createOriginalLensPass } from "./original-lens-pass";
 import { getPreset, presetValues } from "./presets";
 import { cubePresetsAtAngle, cubeRotationTarget, cubeRotationDuration } from "./cube-faces";
 import styles from "./exploded-cube.module.css";
+import { InsightCallout } from "../interface/insight-callout";
 
 export function ExplodedCube({
   motion,
@@ -19,6 +20,8 @@ export function ExplodedCube({
   instant: boolean;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const detail = useRef<HTMLElement>(null);
+  const [detailOpen, setDetailOpen] = useState(true);
   const renderer = useRef<(() => void) | null>(null);
   const latest = useRef(motion);
   const rotation = useRef({ angle: cubeRotationTarget(selected) });
@@ -181,6 +184,11 @@ export function ExplodedCube({
         projection;
       const centerY = 600 * (0.5 - m.values.focalY) * (1 - t) * projection;
       const imageSize = 600 * (1 + (m.values.artworkScale - 1) * t);
+      if (detail.current) {
+        detail.current.style.setProperty("--art-unit", String(cssWidth / 1100));
+        detail.current.style.backdropFilter = `blur(${25 * cssWidth / 1100}px)`;
+        detail.current.style.top = `${(425 + imageSize / 2 - 154) / 850 * 100}%`;
+      }
       const facePresets = cubePresetsAtAngle(rotation.current.angle);
       const maxProjection = m.values.cameraDistance / (m.values.cameraDistance - m.values.cubeDepth);
       // Keep allocations stable through expansion; rasterize at the glass's screen size.
@@ -189,11 +197,20 @@ export function ExplodedCube({
         m.values.restWidth, m.values.cubeSize * maxProjection,
       ) * pixelScale));
       optics.forEach((pass, face) => {
+        const angle = face * Math.PI / 2 + rotation.current.angle;
+        const nx = Math.sin(angle), nz = Math.cos(angle);
+        const front = Math.max(0, Math.min(1, (nz - 0.6) / 0.35));
+        const focus = front * front * (3 - 2 * front);
+        const focused = (1 - t) * focus;
+        const faceWidth = m.values.cubeSize + (m.values.restWidth - m.values.cubeSize) * focused;
+        const faceHeight = m.values.cubeSize + (m.values.restHeight - m.values.cubeSize) * focused;
+        const restDepth = 310 + (26 - 310) * focus;
+        const faceDepth = restDepth + (m.values.cubeDepth - restDepth) * t;
         pass.render(
           presets[facePresets[face]!]!,
           {
-            width: lensWidth,
-            height: lensHeight,
+            width: faceWidth,
+            height: faceHeight,
             imageSize,
             imageX: (lensWidth - imageSize) / 2,
             imageY: (lensHeight - imageSize) / 2 + centerY,
@@ -201,6 +218,11 @@ export function ExplodedCube({
           texture,
           image.naturalWidth,
           resolution,
+          {
+            center: [nx * faceDepth, 600 * (0.5 - m.values.focalY) * focused, nz * faceDepth],
+            right: [nz, 0, -nx],
+            camera: m.values.cameraDistance,
+          },
         );
       });
       gl.useProgram(program);
@@ -273,13 +295,26 @@ export function ExplodedCube({
   }, []);
   return (
     <div className={styles.scene} data-cube-scene data-expanded={motion.open}>
+      <div className={styles.composition}>
       <canvas
         ref={canvas}
         role="img"
         aria-label={`Exploded glass cube, lens ${selected + 1}, refracting a painting of women walking through the city`}
       />
+      {detailOpen && <aside ref={detail} className={styles.detail} aria-label="Aesthetic contrast insight">
+        <button
+          type="button"
+          className={styles.closeDetail}
+          aria-label="Close Aesthetic contrast"
+          onClick={() => setDetailOpen(false)}
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <InsightCallout />
+      </aside>}
+      </div>
       {error && (
-        <p role="alert">
+        <p className={styles.error} role="alert">
           The glass scene could not render. Check WebGL support and reload.
         </p>
       )}
