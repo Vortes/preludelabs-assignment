@@ -74,10 +74,8 @@ vec3 compositePlane(vec3 color,vec4 hit,vec3 eye,vec3 ray,float imageDistance,ve
    vec2 lensUV=local/(extent*2.)+.5;
    if(all(greaterThanEqual(lensUV,vec2(0.))) && all(lessThanEqual(lensUV,vec2(1.)))) {
      vec4 optical=faceOptics(hit.y,lensUV);
-     // Expanded faces filter only the artwork beneath them. The original wide
-     // resting lens retains its authored edge diffraction during collapse.
-     float artworkCoverage=mix(1.,imageAt(imagePoint).a,progress);
-     result=mix(result,optical.rgb,optical.a*artworkCoverage);
+     // Refraction can pull artwork beyond its bounds across the glass face.
+     result=mix(result,optical.rgb,optical.a);
    }
 
  }
