@@ -1,20 +1,20 @@
 .skeleton {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 20;
   background: #090909;
   pointer-events: none;
   user-select: none;
-  --unit: clamp(.65, calc(100vw / 1920px), 1);
-  --panel: min(38vw, calc(599px * var(--unit)));
+  --inset: clamp(10.4px, 0.833333vw, 16px);
+  --panel: min(38vw, clamp(389.35px, 31.197917vw, 599px));
 }
 .panel {
   position: absolute;
-  inset: calc(16px * var(--unit)) auto calc(16px * var(--unit)) calc(16px * var(--unit));
+  inset: var(--inset) auto var(--inset) var(--inset);
   width: var(--panel);
-  padding: calc(44px * var(--unit)) calc(30px * var(--unit));
+  padding: clamp(28.6px, 2.291667vw, 44px) clamp(19.5px, 1.5625vw, 30px);
   border: 1px solid #242424;
-  border-radius: calc(48px * var(--unit));
+  border-radius: clamp(31.2px, 2.5vw, 48px);
   overflow: hidden;
 }
 .card { padding: 24px 16px; border: 1px solid #202020; border-radius: 24px; margin-bottom: 20px; }
@@ -26,7 +26,7 @@
 .lines { margin-top: 24px; }
 .lines b { margin: 14px 0; }
 .composer { position: absolute; bottom: 12px; left: 12px; right: 12px; height: 23%; padding: 20px; border: 1px solid #262626; border-radius: 24px; background: #111; }
-.stage { position: absolute; inset: 0 0 0 calc(var(--panel) + 16px * var(--unit)); }
+.stage { position: absolute; inset: 0 0 0 calc(var(--panel) + var(--inset)); }
 .navigation { display: flex; justify-content: space-between; padding: 32px; }
 .navigation i { width: 52px; height: 24px; border-radius: 16px; }
 .navigation i:nth-child(2) { width: 150px; }
