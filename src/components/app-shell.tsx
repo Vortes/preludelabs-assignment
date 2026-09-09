@@ -128,12 +128,11 @@ export function AppShell({
       <div className={styles.mobile}>
         <p>Mobile coming soon</p>
       </div>
-      {viewport.width >= 768 && (
+      {process.env.NODE_ENV === "development" && viewport.width >= 768 && (
         <DialRoot
           position="bottom-right"
           theme="dark"
           defaultOpen={true}
-          productionEnabled
         />
       )}
     </div>
