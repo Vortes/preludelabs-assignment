@@ -395,3 +395,29 @@
 .chatInput:focus-visible {
   outline: none;
 }
+
+button.iconControl,
+.imageControl {
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+button.iconControl { background: transparent; }
+.imageControl { background: transparent; }
+button.monogram { background: #ffffff26; font-family: Georgia, serif; }
+.composerTools button.iconControl { background: #ffffff26; }
+button.iconControl:focus-visible,
+.imageControl:focus-visible {
+  outline: 2px solid #8abaff;
+  outline-offset: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+  button.iconControl:hover { background: #ffffff1a; }
+  button.iconControl:hover .icon { opacity: 1; }
+  .imageControl:hover { filter: brightness(1.15); }
+}
+button.iconControl:active,
+.imageControl:active { opacity: 0.65; }
+.detailTitle .iconControl { width: auto; height: auto; }

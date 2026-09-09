@@ -15,11 +15,15 @@ export function ExplodedCube({
   motion,
   selected,
   instant,
+  onReady,
 }: {
   motion: ReturnType<typeof useLensMotion>;
   selected: number;
   instant: boolean;
+  onReady?: () => void;
 }) {
+  const readyCallback = useRef(onReady);
+  useLayoutEffect(() => { readyCallback.current = onReady; }, [onReady]);
   const canvas = useRef<HTMLCanvasElement>(null);
   const detail = useRef<HTMLElement>(null);
   const [detailOpen, setDetailOpen] = useState(true);
@@ -32,6 +36,7 @@ export function ExplodedCube({
   const switchTimeline = useRef<gsap.core.Timeline | null>(null);
   const { rotationDuration, rotationOvershoot, rotationSettle, rotationRecoil } = motion.values;
   const [error, setError] = useState(false);
+  useEffect(() => { if (error) readyCallback.current?.(); }, [error]);
   useLayoutEffect(() => {
     latest.current = motion;
     renderer.current?.();
@@ -318,6 +323,7 @@ export function ExplodedCube({
       );
       renderer.current = scheduleDraw;
       draw();
+      readyCallback.current?.();
     };
     image.onerror = () => {
       if (!disposed) setError(true);

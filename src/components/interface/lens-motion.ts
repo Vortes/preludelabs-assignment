@@ -12,6 +12,8 @@ export function useLensMotion(expanded: boolean, instant: boolean) {
       duration: [0.28, 0.1, 1.5, 0.01],
       expansionOvershoot: [0.025, 0, 0.06, 0.005],
       expansionRecoil: [0.2, 0, 0.4, 0.01],
+      exitStretch: [0.08, 0, 0.18, 0.01],
+      exitStretchDuration: [0.07, 0.03, 0.16, 0.01],
       collapseOvershoot: [0.012, 0, 0.04, 0.002],
       exitMultiplier: [0.75, 0.3, 1, 0.05],
       ease: {
@@ -45,7 +47,7 @@ export function useLensMotion(expanded: boolean, instant: boolean) {
   const sceneRender = useRef<() => void>(() => undefined);
   const settleRotation = useRef<(instant: boolean) => number>(() => 0);
   const open = expanded || controls.values.holdExpanded;
-  const { duration, exitMultiplier, ease, expansionOvershoot, expansionRecoil, collapseOvershoot } = controls.values;
+  const { duration, exitMultiplier, ease, expansionOvershoot, expansionRecoil, collapseOvershoot, exitStretch, exitStretchDuration } = controls.values;
   useLayoutEffect(() => {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     const target = progress.current;
@@ -80,8 +82,17 @@ export function useLensMotion(expanded: boolean, instant: boolean) {
       } else {
         const exitDuration = duration * exitMultiplier;
         const overshoot = Math.min(collapseOvershoot, Math.abs(target.value) * 0.1);
-        timeline.addLabel("Return")
-          .to(target, { value: -overshoot, duration: exitDuration * 9 / 14, ease })
+        const stretch = exitStretch * Math.max(0, Math.min(1, target.value));
+        if (stretch > 0) {
+          timeline.addLabel("Stretch")
+            .to(target, {
+              value: target.value + stretch,
+              duration: exitStretchDuration,
+              ease: "sine.out",
+            });
+        }
+        timeline.addLabel("Release")
+          .to(target, { value: -overshoot, duration: exitDuration * 9 / 14, ease: "power3.inOut" })
           .addLabel("Catch")
           .to(target, { value: overshoot * expansionRecoil, duration: exitDuration * 3 / 14, ease: "sine.inOut" })
           .addLabel("Rest")
@@ -94,6 +105,6 @@ export function useLensMotion(expanded: boolean, instant: boolean) {
       timeline?.kill();
       media.removeEventListener("change", animate);
     };
-  }, [open, instant, duration, exitMultiplier, ease, expansionOvershoot, expansionRecoil, collapseOvershoot]);
+  }, [open, instant, duration, exitMultiplier, ease, expansionOvershoot, expansionRecoil, collapseOvershoot, exitStretch, exitStretchDuration]);
   return { values: controls.values, progress, render, sceneRender, settleRotation, open };
 }

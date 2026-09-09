@@ -38,8 +38,8 @@ export function IconControl({
   label: string;
 }) {
   return (
-    <span className={styles.iconControl} role="img" aria-label={label}>
+    <button type="button" className={styles.iconControl} aria-label={label}>
       <FigmaIcon name={name} />
-    </span>
+    </button>
   );
 }

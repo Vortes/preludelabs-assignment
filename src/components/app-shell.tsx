@@ -4,6 +4,7 @@ import {
   type CSSProperties,
   type ReactNode,
   useEffect,
+  useCallback,
   useLayoutEffect,
   useRef,
   useState,
@@ -12,6 +13,7 @@ import { DialRoot, useDialKitController } from "dialkit";
 import "dialkit/styles.css";
 import { shellControls } from "./interface/shell-controls";
 import styles from "./app-shell.module.css";
+import { WorkspaceSkeleton } from "./interface/workspace-skeleton";
 import { SpecularOverlay } from "./glass/specular-overlay";
 import { ExplodedCube } from "./glass/exploded-cube";
 import { type useLensMotion } from "./interface/lens-motion";
@@ -33,6 +35,8 @@ export function AppShell({
   instantSelection: boolean;
   footer: ReactNode;
 }) {
+  const [ready, setReady] = useState(false);
+  const reveal = useCallback(() => setReady(true), []);
   const host = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState({ width: 1920, height: 1080 });
   const controls = useDialKitController("Interface shell", shellControls, {
@@ -98,8 +102,10 @@ export function AppShell({
   });
   return (
     <div ref={host} className={styles.viewport}>
-      <div className={styles.desktop}>
+      <div className={styles.desktop} data-ready={ready}>
         <main
+          inert={!ready}
+          aria-busy={!ready}
           className={styles.frame}
           style={variables}
           data-guides={p.showGuides}
@@ -116,6 +122,7 @@ export function AppShell({
             <header className={styles.navigation}>{navigation}</header>
             {viewport.width >= 768 && (
               <ExplodedCube
+                onReady={reveal}
                 motion={motion}
                 selected={selectedLens}
                 instant={instantSelection}
@@ -125,6 +132,7 @@ export function AppShell({
           </section>
           {viewport.width >= 768 && <SpecularOverlay />}
         </main>
+        {!ready && <WorkspaceSkeleton />}
       </div>
       <div className={styles.mobile}>
         <p>Mobile coming soon</p>

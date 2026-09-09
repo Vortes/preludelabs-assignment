@@ -29,7 +29,7 @@ export function ConversationPanel() {
                 <p className={styles.eyebrow}>Lens {i + 1}</p>
                 <h2 className={styles.cardTitle}>{title}</h2>
               </div>
-              <span className={styles.orb}>
+              <button type="button" className={`${styles.orb} ${styles.imageControl}`} aria-label={`Lens ${i + 1} aura`}>
                 <Image
                   src="/figma/orb.png"
                   alt="Lens aura"
@@ -37,8 +37,8 @@ export function ConversationPanel() {
                   height={60}
                   unoptimized
                 />
-              </span>
-              <FigmaIcon name={i === 0 ? "chevron-up" : "chevron-down"} />
+              </button>
+              <IconControl name={i === 0 ? "chevron-up" : "chevron-down"} label={`${i === 0 ? "Collapse" : "Expand"} lens ${i + 1}`} />
             </div>
             {i === 0 && (
               <>
@@ -59,7 +59,7 @@ export function ConversationPanel() {
                     <IconControl name="copy" label="Copy insight" />
                     <IconControl name="refresh" label="Refresh insight" />
                   </div>
-                  <div className={styles.sources}>
+                  <button type="button" className={`${styles.sources} ${styles.imageControl}`}>
                     <Image
                       src="/figma/sources.png"
                       alt="Sources"
@@ -68,7 +68,7 @@ export function ConversationPanel() {
                       unoptimized
                     />
                     <span>Show sources</span>
-                  </div>
+                  </button>
                 </div>
               </>
             )}
@@ -85,7 +85,7 @@ export function ConversationPanel() {
           <button type="button" className={styles.action}>
             <span className={styles.shortcut}>1</span>
             <span className={styles.actionLabel}>Accept all insights and continue</span>
-            <IconControl name="arrow-right" label="Accept all insights and continue" />
+            <span className={styles.iconControl} aria-hidden="true"><FigmaIcon name="arrow-right" /></span>
           </button>
           <div className={styles.actionGroup}>
             {([
@@ -95,7 +95,7 @@ export function ConversationPanel() {
               <button type="button" className={styles.action} key={label}>
                 <span className={styles.shortcut}>{index + 2}</span>
                 <span className={styles.actionLabel}>{label}</span>
-                <IconControl name={icon} label={label} />
+                <span className={styles.iconControl} aria-hidden="true"><FigmaIcon name={icon} /></span>
               </button>
             ))}
           </div>
@@ -109,7 +109,7 @@ export function ConversationPanel() {
           />
           <div className={styles.composerTools}>
             <div className={styles.composerLeft}>
-              <span className={styles.composerOrb}>
+              <button type="button" className={`${styles.composerOrb} ${styles.imageControl}`} aria-label="Prelude aura">
                 <Image
                   src="/figma/composer-orb.png"
                   alt="Prelude aura"
@@ -117,7 +117,7 @@ export function ConversationPanel() {
                   height={64}
                   unoptimized
                 />
-              </span>
+              </button>
               <IconControl name="plus" label="Add attachment" />
             </div>
             <IconControl name="voice" label="Voice input" />

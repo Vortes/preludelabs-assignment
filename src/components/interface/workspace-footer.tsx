@@ -217,7 +217,7 @@ export function WorkspaceFooter({
           </div>
           <button
             className={styles.add}
-            disabled
+            type="button"
             title="Custom lenses coming soon"
           >
             <FigmaIcon name="plus-circled" />

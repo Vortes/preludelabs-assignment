@@ -6,7 +6,7 @@ export function WorkspaceNavigation() {
   return (
     <>
       <div className={`${styles.navPill} ${styles.homePill}`}>
-        <span className={styles.monogram}>P</span>
+        <button type="button" className={`${styles.monogram} ${styles.imageControl}`} aria-label="Home">P</button>
         <IconControl name="message" label="Message" />
       </div>
       <div className={`${styles.tabs} ${styles.workspaceTabs}`}>
@@ -16,13 +16,15 @@ export function WorkspaceNavigation() {
       </div>
       <div className={`${styles.navPill} ${styles.accountPill}`}>
         <IconControl name="share" label="Share" />
+        <button type="button" className={`${styles.avatar} ${styles.imageControl}`} aria-label="Profile">
         <Image
           className={styles.avatar}
           src="/figma/profile.png"
-          alt="Profile"
+          alt=""
           width={32}
           height={32}
         />
+        </button>
       </div>
     </>
   );

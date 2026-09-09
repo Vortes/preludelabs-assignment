@@ -1,11 +1,11 @@
-import { FigmaIcon, IconControl } from "./figma-icon";
+import { IconControl } from "./figma-icon";
 import styles from "./interface.module.css";
 
 export function InsightCallout() {
   return (
     <>
       <p className={styles.detailTitle}>
-        <FigmaIcon name="aperture" />
+        <IconControl name="aperture" label="Aesthetic contrast" />
         Aesthetic contrast
       </p>
       <p className={styles.detailBody}>
