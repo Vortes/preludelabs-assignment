@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { LensThumbnail } from "../glass/lens-thumbnail";
 import { lensPresets } from "../glass/presets";
+import { useProximitySound } from "./use-proximity-sound";
 import { FigmaIcon } from "./figma-icon";
 import styles from "./lens-navigation.module.css";
 
@@ -18,6 +19,7 @@ export function WorkspaceFooter({
   onSelect: (index: number, instant?: boolean) => void;
   onExpand: (expanded: boolean, instant?: boolean) => void;
 }) {
+  const proximitySound = useProximitySound(expanded);
   const anchor = useRef<HTMLDivElement>(null);
   const nav = useRef<HTMLElement>(null);
   const pointerLeaving = useRef(false);
@@ -33,6 +35,7 @@ export function WorkspaceFooter({
       });
   }, [selected, expanded]);
   useEffect(() => {
+    const proximityPlayer = proximitySound.current;
     const element = nav.current;
     const bounds = anchor.current;
     if (!element || !bounds) return;
@@ -70,6 +73,7 @@ export function WorkspaceFooter({
         hovered.style.cursor = "pointer";
       }
       const strength = Math.pow(Math.max(0, 1 - distance / 120), 2);
+      proximityPlayer?.approach(strength);
       const length = Math.max(1, Math.hypot(dx, dy));
       gsap.to(element, {
         x: dx / length * 8 * strength,
@@ -86,6 +90,7 @@ export function WorkspaceFooter({
       if (!frame) frame = requestAnimationFrame(draw);
     };
     const leave = () => {
+      proximityPlayer?.approach(0);
       clearCursor();
       pointer = null;
       cancelAnimationFrame(frame);
@@ -100,6 +105,7 @@ export function WorkspaceFooter({
     document.documentElement.addEventListener("pointerleave", leave);
     media.addEventListener("change", leave);
     return () => {
+      proximityPlayer?.stop();
       clearCursor();
       cancelAnimationFrame(frame);
       gsap.killTweensOf(element);
@@ -110,7 +116,7 @@ export function WorkspaceFooter({
       document.documentElement.removeEventListener("pointerleave", leave);
       media.removeEventListener("change", leave);
     };
-  }, [expanded]);
+  }, [expanded, proximitySound]);
   return (
     <>
       <div ref={anchor} className={styles.magneticAnchor}>
