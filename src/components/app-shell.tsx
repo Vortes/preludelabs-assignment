@@ -85,21 +85,29 @@ export function AppShell({
     const surface = root.querySelector<HTMLElement>("[data-nav-surface]");
     const compact = root.querySelector<HTMLElement>("[data-nav-compact]");
     const contents = root.querySelector<HTMLElement>("[data-nav-contents]");
+    let navWidth = nav?.clientWidth ?? 0;
     const draw = (progress: number) => {
       const t = Math.max(0, Math.min(1, progress));
       const mix = (a: number, b: number) => a + (b - a) * t;
-      if (nav && surface && compact && contents) {
-        const collapsed = Math.min(1, (124 * unit) / nav.clientWidth);
+      if (nav && surface && compact && contents && navWidth > 0) {
+        const collapsed = Math.min(1, (124 * unit) / navWidth);
         surface.style.transform = `scale(${mix(collapsed, 1)}, ${mix(40 / 140, 1)})`;
         compact.style.opacity = String(1 - Math.min(1, t * 3));
         contents.style.opacity = String(Math.max(0, (t - 0.2) / 0.8));
         contents.style.transform = `translateY(${12 * (1 - t)}px)`;
-        nav.style.clipPath = `inset(${(1 - t) * (140 - 40) * unit}px ${((1 - t) * (nav.clientWidth - 124 * unit)) / 2}px 0 round ${32 * unit}px)`;
+        nav.style.clipPath = `inset(${(1 - t) * (140 - 40) * unit}px ${((1 - t) * (navWidth - 124 * unit)) / 2}px 0 round ${32 * unit}px)`;
       }
     };
     motion.render.current = draw;
     draw(motion.progress.current.value);
-  });
+    const observer = new ResizeObserver(([entry]) => {
+      if (!entry || !nav) return;
+      navWidth = nav.clientWidth;
+      draw(motion.progress.current.value);
+    });
+    if (nav) observer.observe(nav);
+    return () => observer.disconnect();
+  }, [unit, motion.render, motion.progress]);
   return (
     <div ref={host} className={styles.viewport}>
       <div className={styles.desktop} data-ready={ready}>

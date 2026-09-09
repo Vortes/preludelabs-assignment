@@ -219,11 +219,12 @@ export function ExplodedCube({
     gl.bindTexture(gl.TEXTURE_2D, texture);
     let disposed = false;
     const image = new Image();
-    let frame = 0;
+    let drawQueued = false;
     let cssWidth = element.clientWidth;
     let cssHeight = element.clientHeight;
     const draw = () => {
-      frame = 0;
+      drawQueued = false;
+      gsap.ticker.remove(draw);
       const ratio = Math.min(devicePixelRatio, 1.5);
       const width = Math.max(1, Math.round(cssWidth * ratio)),
         height = Math.max(1, Math.round(cssHeight * ratio));
@@ -245,9 +246,7 @@ export function ExplodedCube({
       const centerY = 600 * (0.5 - m.values.focalY) * (1 - t) * projection;
       const imageSize = 600 * (1 + (m.values.artworkScale - 1) * t);
       if (detail.current) {
-        detail.current.style.setProperty("--art-unit", String(cssWidth / 1100));
-        detail.current.style.backdropFilter = `blur(${25 * cssWidth / 1100}px)`;
-        detail.current.style.top = `${(425 + imageSize / 2 - 154) / 850 * 100}%`;
+        detail.current.style.transform = `translate(-50%, ${(imageSize - 600) / 2 * cssHeight / 850}px)`;
       }
       const facePresets = faceSlots.current;
       const maxProjection = m.values.cameraDistance / (m.values.cameraDistance - m.values.cubeDepth);
@@ -266,6 +265,9 @@ export function ExplodedCube({
         const faceHeight = m.values.cubeSize + (m.values.restHeight - m.values.cubeSize) * focused;
         const restDepth = 310 + (26 - 310) * focus;
         const faceDepth = restDepth + (m.values.cubeDepth - restDepth) * t;
+        // The compositor samples optics only in front of the artwork (z = 0).
+        // Test the entire face, not its normal: tilted faces can cross that plane.
+        if (nz * faceDepth + Math.abs(nx) * faceWidth / 2 <= 0) return;
         pass.render(
           presets[facePresets[face]!]!,
           {
@@ -309,7 +311,10 @@ export function ExplodedCube({
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     };
     const scheduleDraw = () => {
-      if (!frame) frame = requestAnimationFrame(draw);
+      if (drawQueued) return;
+      drawQueued = true;
+      // Draw after GSAP updates in the same tick, then let its ticker sleep.
+      gsap.ticker.add(draw);
     };
     image.onload = () => {
       if (disposed) return;
@@ -329,10 +334,17 @@ export function ExplodedCube({
       if (!disposed) setError(true);
     };
     image.src = "/figma/lens-artwork-hq.png";
+    const updateDetailSize = () => {
+      if (!detail.current) return;
+      detail.current.style.setProperty("--art-unit", String(cssWidth / 1100));
+      detail.current.style.backdropFilter = `blur(${25 * cssWidth / 1100}px)`;
+    };
+    updateDetailSize();
     const observer = new ResizeObserver(([entry]) => {
       if (!entry) return;
       cssWidth = entry.contentRect.width;
       cssHeight = entry.contentRect.height;
+      updateDetailSize();
       renderer.current?.();
     });
     observer.observe(element);
@@ -345,7 +357,7 @@ export function ExplodedCube({
     element.addEventListener("webglcontextlost", lost);
     return () => {
       disposed = true;
-      cancelAnimationFrame(frame);
+      gsap.ticker.remove(draw);
       observer.disconnect();
       element.removeEventListener("webglcontextlost", lost);
       renderer.current = null;

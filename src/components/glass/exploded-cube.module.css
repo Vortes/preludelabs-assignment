@@ -28,7 +28,7 @@
   --detail-padding: calc(24px * var(--art-unit));
   position: absolute;
   left: 50%;
-  top: 67.176%;
+  top: calc(571 / 850 * 100%);
   transform: translateX(-50%);
   width: 29.636%;
   height: 27.176%;

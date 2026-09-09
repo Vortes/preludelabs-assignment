@@ -1,0 +1,576 @@
+{
+  "baseline": {
+    "states": [
+      {
+        "name": "rest",
+        "hash": "316a2015ba25befd030d9dc32e7074ad2ca5b15d5af262313967e10a2fa8373c",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 597.15625
+      },
+      {
+        "name": "expanded",
+        "hash": "138ce0114b23060b8ad33dd6d143cdeeb140a870e829936afbc80404e85b0684",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-1",
+        "hash": "138ce0114b23060b8ad33dd6d143cdeeb140a870e829936afbc80404e85b0684",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-2",
+        "hash": "990073fab96ad6230cd1831fd975b06506111aabd7429509d5180e547e2f4dfd",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-3",
+        "hash": "265c160c253179c80f87596809bd6f3de0c24edc0667d2a98f637eaf317c9630",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-4",
+        "hash": "c16ff9fe9748f9fcbd52ada22fc3111f78cba309513653060afff54d8865d821",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-5",
+        "hash": "bde6c8410a967eae6a66e599d8caba1ed69bfe1a0bf7f712924c3440e0fe2390",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-6",
+        "hash": "3084a6dc6db3f59e5a1c806e26130a320955ac4b5aaf7f4d5704875750545a7e",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-7",
+        "hash": "86653be3fa157eca729ff9255b1f53c49980d94da933b6189223e77fb099417e",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-8",
+        "hash": "a6a75fd3683a59db53b11a9c8aad8950e738c653a1b4da3ae045dcc9045a9748",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-9",
+        "hash": "2e93ec4ea1def99def19bccb646ba3343e69f9185d588b4f63df9263eeb798ba",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-10",
+        "hash": "6258dbfb8ccb87a12306e92eed818370c80d3d6311d8aeafc23a21b1e1dcb9eb",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-11",
+        "hash": "3014da14f6e8835568c7e9454fdb5b5e61985a212903bbbb531148d4e2648c49",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "lens-12",
+        "hash": "63c5eb4e2b4c2c9848403ad7edf24241f1b4444be942a6cbcde958d3b8211849",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "keyboard-home",
+        "hash": "a608aa81b86f4a46324499954a0ffad7b73d531700dbb3a26776c5937b0ed716",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "keyboard-end",
+        "hash": "63c5eb4e2b4c2c9848403ad7edf24241f1b4444be942a6cbcde958d3b8211849",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.21875
+      },
+      {
+        "name": "collapsed",
+        "hash": "3a081acc8c021343a78ebe85ef27e660ee202032432b6608439792ab2e7e3b27",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 597.15625
+      },
+      {
+        "name": "resize",
+        "hash": "b4df49a5167c6e9e01712e6c1ad87bac650eed5ecefce28e72ebbda7ca641f12",
+        "overlayHash": "ffe996451627b96cc4d159e83e77b13e4aa7b2ae105a7cee0ce2f047ee457edf",
+        "glError": 0,
+        "canvasSize": [
+          937,
+          724
+        ],
+        "detailTop": 444.375
+      },
+      {
+        "name": "resize-expanded",
+        "hash": "62ebaa03e58e9c2826eaac9134578cf05ca9db92fe227d3752b4eb06e77690cd",
+        "overlayHash": "ffe996451627b96cc4d159e83e77b13e4aa7b2ae105a7cee0ce2f047ee457edf",
+        "glError": 0,
+        "canvasSize": [
+          937,
+          724
+        ],
+        "detailTop": 403.5
+      },
+      {
+        "name": "scroll",
+        "hash": "62ebaa03e58e9c2826eaac9134578cf05ca9db92fe227d3752b4eb06e77690cd",
+        "overlayHash": "e6eb047fa876301228b79e2de65f89e1eb688ce212cb586849a1b8e3677a50d4",
+        "glError": 0,
+        "canvasSize": [
+          937,
+          724
+        ],
+        "detailTop": 403.5
+      }
+    ],
+    "errors": [],
+    "mobileCanvases": 0
+  },
+  "candidate": {
+    "states": [
+      {
+        "name": "rest",
+        "hash": "316a2015ba25befd030d9dc32e7074ad2ca5b15d5af262313967e10a2fa8373c",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 597.15625
+      },
+      {
+        "name": "expanded",
+        "hash": "138ce0114b23060b8ad33dd6d143cdeeb140a870e829936afbc80404e85b0684",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-1",
+        "hash": "138ce0114b23060b8ad33dd6d143cdeeb140a870e829936afbc80404e85b0684",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-2",
+        "hash": "990073fab96ad6230cd1831fd975b06506111aabd7429509d5180e547e2f4dfd",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-3",
+        "hash": "265c160c253179c80f87596809bd6f3de0c24edc0667d2a98f637eaf317c9630",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-4",
+        "hash": "c16ff9fe9748f9fcbd52ada22fc3111f78cba309513653060afff54d8865d821",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-5",
+        "hash": "bde6c8410a967eae6a66e599d8caba1ed69bfe1a0bf7f712924c3440e0fe2390",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-6",
+        "hash": "3084a6dc6db3f59e5a1c806e26130a320955ac4b5aaf7f4d5704875750545a7e",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-7",
+        "hash": "86653be3fa157eca729ff9255b1f53c49980d94da933b6189223e77fb099417e",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-8",
+        "hash": "a6a75fd3683a59db53b11a9c8aad8950e738c653a1b4da3ae045dcc9045a9748",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-9",
+        "hash": "2e93ec4ea1def99def19bccb646ba3343e69f9185d588b4f63df9263eeb798ba",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-10",
+        "hash": "6258dbfb8ccb87a12306e92eed818370c80d3d6311d8aeafc23a21b1e1dcb9eb",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-11",
+        "hash": "3014da14f6e8835568c7e9454fdb5b5e61985a212903bbbb531148d4e2648c49",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "lens-12",
+        "hash": "63c5eb4e2b4c2c9848403ad7edf24241f1b4444be942a6cbcde958d3b8211849",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "keyboard-home",
+        "hash": "a608aa81b86f4a46324499954a0ffad7b73d531700dbb3a26776c5937b0ed716",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "keyboard-end",
+        "hash": "63c5eb4e2b4c2c9848403ad7edf24241f1b4444be942a6cbcde958d3b8211849",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 533.20458984375
+      },
+      {
+        "name": "collapsed",
+        "hash": "3a081acc8c021343a78ebe85ef27e660ee202032432b6608439792ab2e7e3b27",
+        "overlayHash": "8b25bd14f926ac7b13087817b3500751feabd56a4bee01f2775795274f6465e7",
+        "glError": 0,
+        "canvasSize": [
+          1466,
+          1132
+        ],
+        "detailTop": 597.15625
+      },
+      {
+        "name": "resize",
+        "hash": "b4df49a5167c6e9e01712e6c1ad87bac650eed5ecefce28e72ebbda7ca641f12",
+        "overlayHash": "ffe996451627b96cc4d159e83e77b13e4aa7b2ae105a7cee0ce2f047ee457edf",
+        "glError": 0,
+        "canvasSize": [
+          937,
+          724
+        ],
+        "detailTop": 444.375
+      },
+      {
+        "name": "resize-expanded",
+        "hash": "62ebaa03e58e9c2826eaac9134578cf05ca9db92fe227d3752b4eb06e77690cd",
+        "overlayHash": "ffe996451627b96cc4d159e83e77b13e4aa7b2ae105a7cee0ce2f047ee457edf",
+        "glError": 0,
+        "canvasSize": [
+          937,
+          724
+        ],
+        "detailTop": 403.50042724609375
+      },
+      {
+        "name": "scroll",
+        "hash": "62ebaa03e58e9c2826eaac9134578cf05ca9db92fe227d3752b4eb06e77690cd",
+        "overlayHash": "e6eb047fa876301228b79e2de65f89e1eb688ce212cb586849a1b8e3677a50d4",
+        "glError": 0,
+        "canvasSize": [
+          937,
+          724
+        ],
+        "detailTop": 403.50042724609375
+      }
+    ],
+    "errors": [],
+    "mobileCanvases": 0
+  },
+  "matches": [
+    {
+      "name": "rest",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": 0
+    },
+    {
+      "name": "expanded",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-1",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-2",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-3",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-4",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-5",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-6",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-7",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-8",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-9",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-10",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-11",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "lens-12",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "keyboard-home",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "keyboard-end",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": -0.01416015625
+    },
+    {
+      "name": "collapsed",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": 0
+    },
+    {
+      "name": "resize",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": 0
+    },
+    {
+      "name": "resize-expanded",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": 0.00042724609375
+    },
+    {
+      "name": "scroll",
+      "exactShaderPixels": true,
+      "exactHighlights": true,
+      "cardDelta": 0.00042724609375
+    }
+  ]
+}

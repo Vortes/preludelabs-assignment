@@ -64,6 +64,12 @@ export function createOriginalLensPass(
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  // Every sampler must be complete, including faces behind the artwork plane.
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
+  // The attachment stays the same even when its texture storage is resized.
+  gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
   const uniforms = new Map<string, WebGLUniformLocation | null>();
   const location = (name: string) => {
     if (!uniforms.has(name))
@@ -114,13 +120,6 @@ export function createOriginalLensPass(
         previousHeight = height;
       }
       gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-      gl.framebufferTexture2D(
-        gl.FRAMEBUFFER,
-        gl.COLOR_ATTACHMENT0,
-        gl.TEXTURE_2D,
-        texture,
-        0,
-      );
       gl.viewport(0, 0, width, height);
       gl.useProgram(program);
       gl.activeTexture(gl.TEXTURE0);

@@ -88,8 +88,10 @@ export function SpecularOverlay() {
       frame = 0;
       const bounds = host.getBoundingClientRect();
       const ratio = Math.min(devicePixelRatio, 2);
-      canvas.width = Math.max(1, Math.round(bounds.width * ratio));
-      canvas.height = Math.max(1, Math.round(bounds.height * ratio));
+      const width = Math.max(1, Math.round(bounds.width * ratio));
+      const height = Math.max(1, Math.round(bounds.height * ratio));
+      if (canvas.width !== width) canvas.width = width;
+      if (canvas.height !== height) canvas.height = height;
       gl.disable(gl.SCISSOR_TEST);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -100,97 +102,156 @@ export function SpecularOverlay() {
       const strength = Number(
         rootStyle.getPropertyValue("--specular-strength").trim() || 1,
       );
-      host
-        .querySelectorAll<HTMLElement>("[data-glass-highlight]")
-        .forEach((element) => {
-          const rect = element.getBoundingClientRect();
-          if (!rect.width || !rect.height) return;
-          const style = getComputedStyle(element);
-          if (style.visibility === "hidden" || element.closest("[hidden]"))
-            return;
-          let left = Math.max(bounds.left, rect.left),
-            right = Math.min(bounds.right, rect.right),
-            top = Math.max(bounds.top, rect.top),
-            bottom = Math.min(bounds.bottom, rect.bottom);
-          for (
-            let parent = element.parentElement;
-            parent && parent !== host;
-            parent = parent.parentElement
-          ) {
-            const parentStyle = getComputedStyle(parent);
-            if (/(auto|scroll|hidden|clip)/.test(parentStyle.overflow)) {
-              const clip = parent.getBoundingClientRect();
-              left = Math.max(left, clip.left);
-              right = Math.min(right, clip.right);
-              top = Math.max(top, clip.top);
-              bottom = Math.min(bottom, clip.bottom);
-            }
+      const rects = new Map<Element, DOMRect>();
+      const styles = new Map<Element, CSSStyleDeclaration>();
+      const rectFor = (element: Element) => {
+        let rect = rects.get(element);
+        if (!rect) {
+          rect = element.getBoundingClientRect();
+          rects.set(element, rect);
+        }
+        return rect;
+      };
+      const styleFor = (element: Element) => {
+        let style = styles.get(element);
+        if (!style) {
+          style = getComputedStyle(element);
+          styles.set(element, style);
+        }
+        return style;
+      };
+      const occlusion = occluders.map((element) => ({
+        element,
+        rect: rectFor(element),
+      }));
+      surfaces.forEach((element) => {
+        const rect = rectFor(element);
+        if (!rect.width || !rect.height) return;
+        const style = styleFor(element);
+        if (style.visibility === "hidden" || element.closest("[hidden]"))
+          return;
+        let left = Math.max(bounds.left, rect.left),
+          right = Math.min(bounds.right, rect.right),
+          top = Math.max(bounds.top, rect.top),
+          bottom = Math.min(bounds.bottom, rect.bottom);
+        for (
+          let parent = element.parentElement;
+          parent && parent !== host;
+          parent = parent.parentElement
+        ) {
+          const parentStyle = styleFor(parent);
+          if (/(auto|scroll|hidden|clip)/.test(parentStyle.overflow)) {
+            const clip = rectFor(parent);
+            left = Math.max(left, clip.left);
+            right = Math.min(right, clip.right);
+            top = Math.max(top, clip.top);
+            bottom = Math.min(bottom, clip.bottom);
           }
-          host
-            .querySelectorAll<HTMLElement>("[data-glass-occluder]")
-            .forEach((occluder) => {
-              if (element === occluder || element.contains(occluder)) return;
-              const clip = occluder.getBoundingClientRect();
-              if (clip.left <= left && clip.right >= right && clip.top > top)
-                bottom = Math.min(bottom, clip.top);
-            });
-          if (right <= left || bottom <= top) return;
-          gl.enable(gl.SCISSOR_TEST);
-          gl.scissor(
-            Math.round((left - bounds.left) * ratio),
-            Math.round((bounds.bottom - bottom) * ratio),
-            Math.round((right - left) * ratio),
-            Math.round((bottom - top) * ratio),
-          );
-          gl.viewport(
-            Math.round((rect.left - bounds.left) * ratio),
-            Math.round((bounds.bottom - rect.bottom) * ratio),
-            Math.round(rect.width * ratio),
-            Math.round(rect.height * ratio),
-          );
-          gl.uniform2f(uniforms.dimensions!, rect.width, rect.height);
-          gl.uniform1f(
-            uniforms.radius!,
-            Math.min(
-              parseFloat(style.borderTopLeftRadius) || 0,
-              rect.width / 2,
-              rect.height / 2,
-            ),
-          );
-          gl.uniform1f(uniforms.angle!, angle);
-          gl.uniform1f(
-            uniforms.intensity!,
-            (element.dataset.glassHighlight === "panel" ? 8 : 20) * strength,
-          );
-          gl.uniform1f(
-            uniforms.softness!,
-            element.dataset.glassHighlight === "panel" ? 0.7 : 1,
-          );
-          gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+        occlusion.forEach(({ element: occluder, rect: clip }) => {
+          if (element === occluder || element.contains(occluder)) return;
+          if (clip.left <= left && clip.right >= right && clip.top > top)
+            bottom = Math.min(bottom, clip.top);
         });
+        if (right <= left || bottom <= top) return;
+        gl.enable(gl.SCISSOR_TEST);
+        gl.scissor(
+          Math.round((left - bounds.left) * ratio),
+          Math.round((bounds.bottom - bottom) * ratio),
+          Math.round((right - left) * ratio),
+          Math.round((bottom - top) * ratio),
+        );
+        gl.viewport(
+          Math.round((rect.left - bounds.left) * ratio),
+          Math.round((bounds.bottom - rect.bottom) * ratio),
+          Math.round(rect.width * ratio),
+          Math.round(rect.height * ratio),
+        );
+        gl.uniform2f(uniforms.dimensions!, rect.width, rect.height);
+        gl.uniform1f(
+          uniforms.radius!,
+          Math.min(
+            parseFloat(style.borderTopLeftRadius) || 0,
+            rect.width / 2,
+            rect.height / 2,
+          ),
+        );
+        gl.uniform1f(uniforms.angle!, angle);
+        gl.uniform1f(
+          uniforms.intensity!,
+          (element.dataset.glassHighlight === "panel" ? 8 : 20) * strength,
+        );
+        gl.uniform1f(
+          uniforms.softness!,
+          element.dataset.glassHighlight === "panel" ? 0.7 : 1,
+        );
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      });
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(draw);
     };
+    let surfaces: HTMLElement[] = [];
+    let occluders: HTMLElement[] = [];
     const resize = new ResizeObserver(schedule);
-    resize.observe(host);
-    const mutation = new MutationObserver(schedule);
+    const register = () => {
+      surfaces = Array.from(
+        host.querySelectorAll<HTMLElement>("[data-glass-highlight]"),
+      );
+      occluders = Array.from(
+        host.querySelectorAll<HTMLElement>("[data-glass-occluder]"),
+      );
+      resize.disconnect();
+      resize.observe(host);
+      [...surfaces, ...occluders].forEach((element) => resize.observe(element));
+    };
+    const affectsHighlights = (target: EventTarget | null) =>
+      target instanceof Element &&
+      [...surfaces, ...occluders].some(
+        (element) => target.contains(element) || element.contains(target),
+      );
+    const mutation = new MutationObserver((records) => {
+      if (
+        records.some(
+          (record) =>
+            record.type === "childList" ||
+            record.attributeName === "data-glass-highlight" ||
+            record.attributeName === "data-glass-occluder",
+        )
+      ) {
+        register();
+        schedule();
+      } else if (records.some((record) => affectsHighlights(record.target))) {
+        schedule();
+      }
+    });
+    register();
     mutation.observe(host, {
       subtree: true,
       attributes: true,
       childList: true,
-      attributeFilter: ["style", "class", "hidden", "data-expanded"],
+      attributeFilter: [
+        "style",
+        "class",
+        "hidden",
+        "data-expanded",
+        "data-glass-highlight",
+        "data-glass-occluder",
+      ],
     });
-    host.addEventListener("scroll", schedule, true);
-    host.addEventListener("transitionend", schedule);
+    const onGeometryEvent = (event: Event) => {
+      if (affectsHighlights(event.target)) schedule();
+    };
+    host.addEventListener("scroll", onGeometryEvent, true);
+    host.addEventListener("transitionend", onGeometryEvent);
     window.addEventListener("resize", schedule);
     schedule();
     return () => {
       cancelAnimationFrame(frame);
       resize.disconnect();
       mutation.disconnect();
-      host.removeEventListener("scroll", schedule, true);
-      host.removeEventListener("transitionend", schedule);
+      host.removeEventListener("scroll", onGeometryEvent, true);
+      host.removeEventListener("transitionend", onGeometryEvent);
       window.removeEventListener("resize", schedule);
       shaders.forEach((shader) => gl.deleteShader(shader));
       gl.deleteBuffer(buffer);

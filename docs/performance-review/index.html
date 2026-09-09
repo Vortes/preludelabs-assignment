@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prelude — performance & structure review</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f8f7f3;
+        --ink: #242723;
+        --muted: #62675f;
+        --line: #d8dcd3;
+        --accent: #315b45;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font:
+          16px/1.6 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1120px;
+        margin: auto;
+        padding: 56px 32px 80px;
+      }
+      header {
+        border-top: 3px solid var(--ink);
+        padding-top: 20px;
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      h1 {
+        font:
+          500 clamp(38px, 6vw, 68px)/1.06 Georgia,
+          serif;
+        letter-spacing: -0.035em;
+        max-width: 850px;
+        margin: 32px 0 24px;
+      }
+      h2 {
+        font:
+          500 32px/1.2 Georgia,
+          serif;
+        margin: 0 0 24px;
+      }
+      h3 {
+        font-size: 18px;
+        line-height: 1.3;
+        margin: 24px 0 10px;
+      }
+      p {
+        max-width: 76ch;
+        margin: 12px 0;
+      }
+      .lead {
+        font-size: 20px;
+        max-width: 66ch;
+      }
+      .meta,
+      small {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 4px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        padding: 24px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      section {
+        padding: 40px 0;
+        border-bottom: 1px solid var(--line);
+        scroll-margin-top: 20px;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 24px 0;
+      }
+      .actions a {
+        display: inline-block;
+        padding: 10px 16px;
+        border: 1px solid var(--accent);
+        border-radius: 5px;
+        text-decoration: none;
+      }
+      .actions a:first-child {
+        background: var(--accent);
+        color: white;
+      }
+      a:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid #ab581e;
+        outline-offset: 4px;
+      }
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin: 32px 0;
+      }
+      .fact {
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+      }
+      .fact strong {
+        display: block;
+        font-size: 30px;
+        line-height: 1.3;
+        font-weight: 500;
+      }
+      .fact span {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .table-wrap {
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        min-width: 650px;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid var(--line);
+        padding: 14px 14px 14px 0;
+      }
+      th {
+        font-weight: 600;
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      td:first-child {
+        font-weight: 600;
+        width: 23%;
+      }
+      code {
+        font:
+          13px/1.5 ui-monospace,
+          monospace;
+        overflow-wrap: anywhere;
+      }
+      pre {
+        white-space: pre-wrap;
+        background: #edeee8;
+        padding: 22px;
+        font:
+          13px/1.65 ui-monospace,
+          monospace;
+        border-radius: 5px;
+      }
+      details {
+        border-top: 1px solid var(--line);
+        padding: 18px 0;
+      }
+      summary {
+        font-weight: 600;
+        cursor: pointer;
+      }
+      details p {
+        margin-left: 18px;
+      }
+      .status {
+        font: 600 11px/1.2 system-ui;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 7px;
+      }
+      .note {
+        border-left: 3px solid var(--accent);
+        padding: 4px 20px;
+        margin: 24px 0;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+      li {
+        margin: 8px 0;
+      }
+      footer {
+        padding-top: 24px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      @media (max-width: 700px) {
+        main {
+          padding: 24px 20px;
+        }
+        .facts,
+        .cols {
+          grid-template-columns: 1fr;
+        }
+        .facts {
+          gap: 12px;
+        }
+        section {
+          padding: 30px 0;
+        }
+        .lead {
+          font-size: 18px;
+        }
+      }
+      @media print {
+        main {
+          max-width: none;
+          padding: 0;
+        }
+        .actions,
+        nav {
+          display: none;
+        }
+        details {
+          break-inside: avoid;
+        }
+        body {
+          background: white;
+        }
+        a {
+          color: inherit;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="eyebrow">
+          Prelude / Engineering review / 09 September 2026
+        </div>
+        <h1>Keep the motion.<br />Remove the wasted work.</h1>
+        <p class="lead">
+          A rendering performance branch, with a separate proposal for
+          organizing the project. Your tuned durations, easing, overshoot,
+          recoil, quarter-speed rotation, and settle-before-collapse behavior
+          are preserved.
+        </p>
+        <p class="meta">
+          Baseline: <code>13fc9d1</code> · Branch:
+          <code>codex/animation-performance</code> · GSAP 3.15 / WebGL 1 /
+          Next.js 15.5.23
+        </p>
+      </header>
+      <nav aria-label="Review sections">
+        <a href="#compare">Try the builds</a
+        ><a href="#changes">Performance changes</a
+        ><a href="#evidence">Evidence & limits</a
+        ><a href="#structure">Organization proposal</a
+        ><a href="#next">Further opportunities</a>
+      </nav>
+      <section id="compare">
+        <h2>Compare the same interaction.</h2>
+        <p>
+          Open each production build at the same window size. Approach the
+          bottom lens selector, expand it, choose adjacent and distant lenses,
+          then leave during a turn. Compare smoothness and input response. The
+          animation itself has the same timing.
+        </p>
+        <div class="actions">
+          <a href="http://localhost:3101" target="_blank" rel="noopener"
+            >Open performance branch ↗</a
+          ><a href="http://localhost:3100" target="_blank" rel="noopener"
+            >Open untouched baseline ↗</a
+          >
+        </div>
+        <p class="meta">
+          Local previews must be running on this Mac. These isolated builds
+          exclude concurrent conversation-panel edits so the comparison stays
+          attributable to performance changes.
+        </p>
+        <div class="facts">
+          <div class="fact">
+            <strong>Same timing</strong
+            ><span>All authored animation parameters retained.</span>
+          </div>
+          <div class="fact">
+            <strong>3 vs. 4</strong
+            ><span>Optical passes per changing expansion frame.</span>
+          </div>
+          <div class="fact">
+            <strong>12 / 12</strong
+            ><span>Presets with matching settled shader pixels.</span>
+          </div>
+        </div>
+      </section>
+      <section id="changes">
+        <h2>Implemented on the branch.</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Area</th>
+                <th>Before</th>
+                <th>After / why it helps</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Highlight invalidation</td>
+                <td>
+                  Any style mutation in the interface schedules an overlay
+                  redraw, including unrelated cube/card/navigation motion.
+                </td>
+                <td>
+                  Track highlighted surfaces and occluders. Respond to related
+                  ancestors, descendants, scroll, size, and structural changes.
+                  Static highlights stop following unrelated motion.
+                </td>
+              </tr>
+              <tr>
+                <td>Canvas allocation</td>
+                <td>Both highlight canvas dimensions assigned every redraw.</td>
+                <td>
+                  Resize only when backing dimensions change. Pixel density
+                  remains capped at 2 as before.
+                </td>
+              </tr>
+              <tr>
+                <td>DOM measurements</td>
+                <td>
+                  Repeated ancestor measurements, computed styles, and occluder
+                  queries for each highlighted surface.
+                </td>
+                <td>
+                  Cache these reads within each draw. Refresh the surface
+                  registry when structure or marker attributes change.
+                </td>
+              </tr>
+              <tr>
+                <td>Navigation geometry</td>
+                <td>
+                  Read <code>clientWidth</code> inside every animation update,
+                  including after style writes.
+                </td>
+                <td>
+                  Measure through ResizeObserver and reuse the width in the
+                  animation callback.
+                </td>
+              </tr>
+              <tr>
+                <td>Detail card movement</td>
+                <td>
+                  Animate <code>top</code>; rewrite the width-dependent blur and
+                  CSS variable during rotation.
+                </td>
+                <td>
+                  Translate from a stable anchor. Update scale and blur on
+                  resize. Same blur strength and card size; subpixel
+                  rasterization can differ slightly.
+                </td>
+              </tr>
+              <tr>
+                <td>Optical passes</td>
+                <td>
+                  Render all four changed face textures, including faces
+                  entirely behind the opaque artwork.
+                </td>
+                <td>
+                  Skip only when the whole face lies behind z = 0. The final
+                  compositor keeps rear tint and edges. A complete 1×1
+                  placeholder keeps unused WebGL samplers valid.
+                </td>
+              </tr>
+              <tr>
+                <td>Framebuffer attachment</td>
+                <td>Reattach the same texture on every optical draw.</td>
+                <td>
+                  Attach once during initialization; retain stable attachments
+                  through storage resizes.
+                </td>
+              </tr>
+              <tr>
+                <td>GSAP / WebGL scheduling</td>
+                <td>
+                  A GSAP update requests a separate animation frame for WebGL.
+                </td>
+                <td>
+                  Queue one draw after GSAP’s timeline updates on its ticker;
+                  remove the listener after drawing. Coalesces updates without a
+                  permanently active render loop.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="meta">
+          Changed files: <code>app-shell.tsx</code>,
+          <code>glass/specular-overlay.tsx</code>,
+          <code>glass/exploded-cube.tsx</code>,
+          <code>glass/exploded-cube.module.css</code>,
+          <code>glass/original-lens-pass.ts</code>. No shader equations, image
+          assets, resolution caps, presets, or motion-control values changed.
+        </p>
+      </section>
+      <section id="evidence">
+        <h2>Measured work, with clear limits.</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Interaction</th>
+                <th>Overlay redraws</th>
+                <th>Scene draws</th>
+                <th>Scene interval p50</th>
+                <th>Scene interval p95</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Expand</td>
+                <td>13 → 1</td>
+                <td>13 → 21</td>
+                <td>24.5 → 13.3 ms</td>
+                <td>52.6 → 51.3 ms</td>
+              </tr>
+              <tr>
+                <td>Rotate</td>
+                <td>1 → 0</td>
+                <td>68 → 97</td>
+                <td>16.6 → 12.3 ms</td>
+                <td>17.9 → 14.0 ms</td>
+              </tr>
+              <tr>
+                <td>Collapse</td>
+                <td>16 → 2</td>
+                <td>16 → 24</td>
+                <td>17.9 → 12.1 ms</td>
+                <td>25.1 → 15.1 ms</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="meta">
+          Baseline → candidate. One 1.6-second capture window per interaction
+          after loading; Chromium, local production builds. Scene intervals
+          measure CPU draw-call submission spacing, not GPU completion or
+          displayed frames.
+        </p>
+        <p>
+          In this run, expansion reduced overlay redraws from 13 to 1 (92%),
+          overlay dimension assignments from 26 to 0, and rectangle reads from
+          287 to 11. Rotation submitted 97 scene draws versus 68 with the same
+          authored duration. Its optical draws increased from 268 to 283 in
+          total because more scene updates were rendered; per submitted scene
+          the ratio fell from 3.94 to 2.92. Framebuffer reattachments fell to
+          zero after initialization. Both renderers issued zero draws while
+          idle.
+        </p>
+        <p>
+          The general RAF p95 during rotation worsened from 9.1 to 16.8 ms even
+          though scene-submission intervals improved. First-expansion p95
+          remained about 51 ms. This branch reduces avoidable work and improves
+          observed scene-update cadence in this sample; it does not eliminate
+          all stalls or prove a universal FPS gain. Warm repeated trials and
+          GPU/presentation traces are the next verification step.
+        </p>
+        <p>
+          Instrumentation counts actual WebGL calls, canvas dimension
+          assignments, and layout/style reads in isolated production pages. It
+          also records requestAnimationFrame intervals, including idle time.
+          Those intervals are <strong>not GPU timings or field INP</strong> and
+          do not establish an FPS improvement.
+        </p>
+        <p>
+          Different scene-frame counts are expected when scheduling and
+          available frame budget change. Compare optical work per scene update
+          as well as total calls; a renderer producing more animation frames may
+          issue more total draws while each frame becomes cheaper.
+        </p>
+        <div class="note">
+          <p id="validation">
+            All 20 settled-state checks matched both the glass shader and
+            highlight pixels exactly, including all 12 presets, reduced motion,
+            keyboard selection, resizing, and scrolling. No page or WebGL errors
+            were observed in those checks. The detail-card position differs by
+            at most 0.0142 CSS px due to transform versus layout rounding. Cold
+            mobile startup and intermediate animation pixels were not
+            pixel-validated.
+          </p>
+        </div>
+        <p>
+          Both isolated builds pass compilation, ESLint, and TypeScript checks
+          with <code>SKIP_ENV_VALIDATION=1</code>, the demo’s documented build
+          mode. Local credentials do not enable Clerk here, so these results
+          exclude authenticated routes and production network conditions. The
+          active workspace’s shared <code>.next</code> directory conflicted with
+          its running development server during an attempted build; final
+          comparisons use independent build directories.
+        </p>
+        <p>
+          Browser scope: Chromium on this Mac, 1440 × 1000 at DPR 2; additional
+          desktop resize and mobile-placeholder checks. Test on Safari and
+          representative slower GPUs before treating this as a cross-device
+          performance result. No resolution reduction, blur reduction,
+          frame-rate cap, or adaptive quality mode was introduced.
+        </p>
+        <p>
+          <a href="metrics.json">Raw workload measurements</a> ·
+          <a href="validation.json">Pixel and interaction checks</a> ·
+          <a href="benchmark.mjs">Benchmark script</a> ·
+          <a href="validate.mjs">Validation script</a>
+        </p>
+      </section>
+      <section id="structure">
+        <div class="eyebrow">Proposal only — no moves or deletions applied</div>
+        <h2>Make ownership obvious.</h2>
+        <p>
+          The main issue is that the shipping interface, authoring workbench,
+          starter backend, and exported deliverables live beside one another
+          without clear boundaries. Keep related code together, retain useful
+          references, and avoid a large reorganization disguised as a
+          performance patch.
+        </p>
+        <div class="cols">
+          <div>
+            <h3>Current shape</h3>
+            <pre>
+src/components/
+  app-shell.tsx + CSS
+  interface-preview.tsx
+  workbench-shell.tsx
+  interface/     # UI, motion, audio, controls
+  glass/         # cube, shaders, workbench,
+                 # presets, thumbnails, audio
+src/server/ + src/trpc/  # starter infrastructure
+public/figma/           # runtime + reference assets
+public/prototypes/      # standalone study
+artifacts/              # HTML export + ZIP
+README.md               # demo + old starter guide</pre>
+          </div>
+          <div>
+            <h3>Proposed shape</h3>
+            <pre>
+src/features/
+  workspace/
+    app-shell.tsx + CSS
+    interface-preview.tsx
+    components/  # conversation, navigation, footer
+    motion/      # lens-motion + controls
+    audio/       # sound preference + hooks
+  glass/
+    renderer/    # cube, optical pass, GLSL
+    presets/     # Figma source + typed mapping
+    components/  # shared thumbnails
+  workbench/
+    workbench-shell.tsx
+    glass-prototype.tsx
+    lens-scene.tsx + CSS
+    glass-canvas.tsx
+    lens-selector.tsx
+src/app/         # thin route entry points
+src/server/ + src/trpc/  # retain until scope decided
+docs/reference/  # studies + Figma references
+public/figma/    # runtime assets only</pre>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Finding</th>
+                <th>Concrete proposal</th>
+                <th>Evidence / review condition</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Renderer depends on workbench type</td>
+                <td>
+                  Move <code>GlassGeometry</code> out of
+                  <code>glass-canvas.tsx</code> into a shared glass geometry
+                  module.
+                </td>
+                <td>
+                  <code>original-lens-pass.ts</code> imports this type from a
+                  React component. Type-only, so not a runtime payload problem;
+                  fix ownership during the structural change.
+                </td>
+              </tr>
+              <tr>
+                <td>Two different glass experiences</td>
+                <td>
+                  Separate <code>/prototype</code> authoring code from the
+                  homepage renderer, with CSS beside its owner.
+                </td>
+                <td>
+                  <code>GlassCanvas</code> and <code>LensScene</code> are used
+                  by the workbench. They are not dead duplicate renderers and
+                  should not be deleted.
+                </td>
+              </tr>
+              <tr>
+                <td>Unreferenced reference assets</td>
+                <td>
+                  Move <code>01-s-settings.png</code> and the lower-resolution
+                  <code>lens-artwork.png</code> to
+                  <code>docs/reference/</code> after checking external links.
+                </td>
+                <td>
+                  No runtime references found in <code>src</code>. Sizes: 48,618
+                  and 877,320 bytes. Artwork hashes differ; these are variants,
+                  not byte-identical duplicates.
+                </td>
+              </tr>
+              <tr>
+                <td>Large exported deliverables</td>
+                <td>
+                  Keep the self-contained HTML and ZIP as release deliverables,
+                  outside the runtime asset tree; add an export recipe and
+                  explicit output policy.
+                </td>
+                <td>
+                  <code>artifacts/</code> is approximately 32 MiB and was
+                  already untracked. Do not delete or silently commit the user’s
+                  exports. Preserve their license files.
+                </td>
+              </tr>
+              <tr>
+                <td>Public standalone study</td>
+                <td>
+                  Move
+                  <code>public/prototypes/glass-material-study.html</code> to
+                  references if its public URL is no longer needed.
+                </td>
+                <td>
+                  Approximately 1.1 MiB; untracked at audit start. A file in
+                  <code>public</code> is served, but does not inflate the
+                  homepage download unless requested.
+                </td>
+              </tr>
+              <tr>
+                <td>Starter documentation</td>
+                <td>
+                  Make README the demo entry point; move optional Neon/Clerk
+                  setup into <code>docs/starter-infrastructure.md</code>.
+                </td>
+                <td>
+                  The README still describes a protected CRUD screen even though
+                  the homepage is the glass demo. Rename package metadata once
+                  product naming is settled.
+                </td>
+              </tr>
+              <tr>
+                <td>Starter infrastructure</td>
+                <td>
+                  Choose whether authentication/database features remain in
+                  scope before removing their routes, providers, schema, env
+                  validation, or dependencies.
+                </td>
+                <td>
+                  <code>src/server</code>, <code>src/trpc</code>, auth routes,
+                  and Prisma are still connected to route/build paths. Unused by
+                  the demo UI does not mean safe to delete piecemeal.
+                </td>
+              </tr>
+              <tr>
+                <td>Direct Motion dependency</td>
+                <td>
+                  Evaluate removing the direct <code>motion</code> dependency in
+                  a separate lockfile change.
+                </td>
+                <td>
+                  No direct <code>src</code> imports found. DialKit still
+                  depends on Motion, so do not claim that removing the direct
+                  declaration removes its transitive code.
+                </td>
+              </tr>
+              <tr>
+                <td>Generated local files</td>
+                <td>
+                  Keep <code>.next</code>, <code>generated</code>,
+                  <code>tsconfig.tsbuildinfo</code>, and dependencies ignored.
+                </td>
+                <td>
+                  Already covered by <code>.gitignore</code>. Deleting generated
+                  Prisma output breaks builds until regeneration; it is not
+                  redundant source.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>A reviewable cleanup sequence</h3>
+        <ol>
+          <li>
+            Clarify the README and asset inventory. Confirm which public
+            reference URLs must survive.
+          </li>
+          <li>
+            Move workbench files and colocated CSS, update imports, and run both
+            routes. Extract shared geometry types.
+          </li>
+          <li>
+            Move workspace/audio/renderer ownership boundaries in a separate
+            commit without behavior changes.
+          </li>
+          <li>
+            Decide the starter infrastructure scope, then update dependencies
+            and lockfile together. Verify routes, build, and export licenses.
+          </li>
+        </ol>
+      </section>
+      <section id="next">
+        <h2>Next opportunities, ranked.</h2>
+        <details open>
+          <summary>1. Share shader programs and static geometry</summary>
+          <p>
+            Four optical passes compile identical shader source and own separate
+            buffers/programs. A shared pipeline with per-face
+            textures/framebuffers could reduce startup work. Profile compilation
+            first, and test context cleanup and all uniform updates before
+            adopting it.
+          </p>
+        </details>
+        <details open>
+          <summary>2. Reduce pointer-handler allocation</summary>
+          <p>
+            The magnetic selector repeatedly creates
+            <code>gsap.to()</code> tweens. GSAP recommends
+            <code>quickTo()</code> for repeated updates of the same numeric
+            properties. A follow-up should reuse x/y/scale tweens with the exact
+            existing duration/ease, while testing reset, interruption, touch and
+            reduced-motion behavior. It is not included in this branch.
+          </p>
+        </details>
+        <details>
+          <summary>3. Improve artwork discovery and transfer</summary>
+          <p>
+            The 12,643,893-byte HQ PNG is requested after renderer
+            initialization. Test early preload and a lossless alternative with
+            decoded-pixel/color checks. Keep the source artwork and resolution.
+            Do not exchange optical quality for a smaller download without
+            visual validation.
+          </p>
+        </details>
+        <details>
+          <summary>
+            4. Separate authoring controls from runtime settings
+          </summary>
+          <p>
+            The homepage imports DialKit controller code even when the
+            development panel is hidden. Extract approved settings before
+            attempting a production-only path; persisted tuning values make
+            blindly substituting defaults unsafe.
+          </p>
+        </details>
+        <details>
+          <summary>5. Audit audio and mobile startup</summary>
+          <p>
+            Proximity audio allocates an AudioContext, noise buffer, and
+            oscillators at mount even when muted. Explore lazy initialization on
+            consent/interaction with preserved sound onset. Initial viewport
+            state can briefly initialize desktop graphics on mobile before
+            ResizeObserver runs; gate it using measured availability.
+          </p>
+        </details>
+        <details>
+          <summary>6. Keep shader specialization separate</summary>
+          <p>
+            The shader’s repeated dispersion/frost sampling merits a GPU
+            profile. Channel specialization, shared programs, and WebGL 2
+            migration change more of the rendering pipeline than this patch.
+            Preserve the existing math until fixed-state pixel checks and GPU
+            timings justify each change.
+          </p>
+        </details>
+        <h3>Documentation used</h3>
+        <ul>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices"
+              >MDN: WebGL best practices</a
+            >
+            — stable framebuffer attachments, avoiding synchronous calls, and
+            shader compilation guidance.
+          </li>
+          <li>
+            <a href="https://gsap.com/docs/v3/GSAP/gsap.ticker/"
+              >GSAP: ticker</a
+            >
+            — custom work after timeline updates and listener cleanup.
+          </li>
+          <li>
+            <a href="https://gsap.com/docs/v3/GSAP/gsap.quickTo()/"
+              >GSAP: quickTo</a
+            >
+            — reusing tweens for pointer-driven numeric updates.
+          </li>
+        </ul>
+      </section>
+      <footer>
+        This review preserves the existing visual direction. Structural changes
+        are proposals; the branch contains rendering changes and this review’s
+        evidence only.
+      </footer>
+    </main>
+  </body>
+</html>
