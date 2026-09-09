@@ -101,7 +101,12 @@ export function ConversationPanel() {
           </div>
         </div>
         <div className={styles.input}>
-          <span>Talk to Prelude…</span>
+          <textarea
+            className={styles.chatInput}
+            aria-label="Message Prelude"
+            placeholder="Talk to Prelude…"
+            rows={1}
+          />
           <div className={styles.composerTools}>
             <div className={styles.composerLeft}>
               <span className={styles.composerOrb}>
